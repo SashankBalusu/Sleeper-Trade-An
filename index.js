@@ -66,6 +66,31 @@ function sleep(milliseconds) {
     currentDate = Date.now();
   } while (currentDate - date < milliseconds);
 }
+function displayRanks(pos, positionRankingsTable, finalRankings){
+  positionRankingsTable.setAttribute("style", "display: block")
+  const tbody = document.querySelector("#sleepertbody")
+  counter = 0
+  for (key in finalRankings[pos]){
+    counter ++
+    let row_2 = document.createElement('tr');
+    let row_2_data_1 = document.createElement('td');
+    row_2_data_1.textContent = key;
+    let row_2_data_2 = document.createElement('td');
+    row_2_data_2.textContent = counter;
+    let row_2_data_3 = document.createElement('td');
+    row_2_data_3.textContent = finalRankings[pos][key];
+
+    row_2.appendChild(row_2_data_1);
+    row_2.appendChild(row_2_data_2);
+    row_2.appendChild(row_2_data_3);
+    tbody.appendChild(row_2); 
+  }
+}
+function removeAllChildNodes(parent) {
+  while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+  }
+}
 // function onReady(callback) {
 //   var intervalId = window.setInterval(function() {
 //     if (document.getElementsByTagName('body')[0] !== undefined) {
@@ -85,6 +110,16 @@ const leagueIDInput = document.querySelector("#leagueIDInput")
 const submitLeagueID = document.querySelector("#submitLeagueID")
 const loadTheGif = document.querySelector("#loadGif")
 const mainSleeper = document.querySelector("#mainSleeper")
+const positionRankings = document.querySelector("#positionRankings")
+const content = document.querySelector("#content")
+const positionRankingsContent = document.querySelector("#positionRankingsContent")
+const positionRankingsTable = document.querySelector("#positionRanksTable")
+const qbRanks = document.querySelector("#qbRanks")
+const wrRanks = document.querySelector("#wrRanks")
+const rbRanks = document.querySelector("#rbRanks")
+const teRanks = document.querySelector("#teRanks")
+const kRanks = document.querySelector("#kRanks")
+
 sleeperLeague.addEventListener("click", function(){
   console.log("hi")
   let cont = animateItemOut(sleeperLeague)
@@ -126,9 +161,14 @@ submitLeagueID.addEventListener("click", function() {
     
     const rosters = JSON.parse(rosterData)
     numUsers = league["total_rosters"]
+    let usernameObj = {}
     for (let i = 0; i < numUsers; i++) {
       userID = users[i]["user_id"]
       userIDList.push(userID)
+      let username = users[i]["display_name"]
+      usernameObj[userID] = username
+
+
     }
   
     for (let i = 0; i < userIDList.length; i++) {
@@ -211,15 +251,14 @@ submitLeagueID.addEventListener("click", function() {
   
     finalRankings = {}
     tempObj = {}
-    let usernameList = []
     for (let i of playerPosCopy){
       if (i != "BN" && i != "FLEX" && i != "DEF"){
         for (let key in ownerPosRank){
-          username = httpGet(`https://api.sleeper.app/v1/user/${key}`)
-          username = JSON.parse(username)
-          username = username["username"]
-          usernameList.push(username)
-          tempObj[username] = ownerPosRank[key][i]
+          // username = httpGet(`https://api.sleeper.app/v1/user/${key}`)
+          // username = JSON.parse(username)
+          // username = username["username"]
+          let usernameFromObj = usernameObj[key]
+          tempObj[usernameFromObj] = ownerPosRank[key][i]
         }
         let posSorted = Object.fromEntries(
         Object.entries(tempObj).sort(([,a],[,b]) => a-b)
@@ -230,16 +269,64 @@ submitLeagueID.addEventListener("click", function() {
     }
     const trades = document.querySelector("#trades")
     const stats = document.querySelector("#stats")
-    for (let i = 0; i < usernameList.length; i++){
+    for (let key in usernameObj){
       let a = document.createElement("a")
-      a.textContent = usernameList[i]
-      a.setAttribute("style", "color:white")
+      a.textContent = usernameObj[key]
+      a.setAttribute("style", "color:black")
       a.classList.add("userTrades")
       trades.appendChild(a)
     }
-    stats.setAttribute("style", "margin-top: " + (parseInt(usernameList.length)*45) + "px")
+    let margin = userIDList.length*25+265
+    stats.setAttribute("style", "margin-top: " + margin + "px")
     console.log(finalRankings)
     mainSleeper.setAttribute("style", "display: grid")
+    const elements = document.getElementsByClassName("userTrades");
+    let counter = 0
+
+    //add trades later on
+    let myFunction = function() {
+      counter++
+      if (counter <3){
+        alert("trades feature (hopefully) coming soon")
+
+      }
+      else {
+        alert("oml stop clicking I said the trade feature is coming soon")
+        
+      }
+    };
+
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].addEventListener('click', myFunction, false);
+    }
+    positionRankings.addEventListener("click", function(){
+      positionRankingsContent.setAttribute("style", "display:block")
+      console.log(finalRankings)
+    })
+    qbRanks.addEventListener("click", function(){
+      removeAllChildNodes(document.querySelector("#sleepertbody"))
+      displayRanks("QB", positionRankingsTable, finalRankings)
+    })
+    wrRanks.addEventListener("click", function(){
+      removeAllChildNodes(document.querySelector("#sleepertbody"))
+      displayRanks("WR", positionRankingsTable, finalRankings)
+
+    })
+    rbRanks.addEventListener("click", function(){
+      removeAllChildNodes(document.querySelector("#sleepertbody"))
+      displayRanks("RB", positionRankingsTable, finalRankings)
+
+    })
+    teRanks.addEventListener("click", function(){
+      removeAllChildNodes(document.querySelector("#sleepertbody"))
+      displayRanks("TE", positionRankingsTable, finalRankings)
+
+    })
+    kRanks.addEventListener("click", function(){
+      removeAllChildNodes(document.querySelector("#sleepertbody"))
+      displayRanks("K", positionRankingsTable, finalRankings)
+
+    })
   //loadGif.setAttribute("style", "display: none")
 
   //document.write(finalRankings)

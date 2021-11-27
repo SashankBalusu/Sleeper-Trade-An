@@ -72,11 +72,12 @@ body {
 }
 
 #sideNav {
-    background: black;
+    background: gray;
     display: grid;
     grid-area: nav;
     width: 100%;
     height: 100vw;
+    border-radius: 10px;
 }
 #trades {
     height: 10px;
@@ -85,27 +86,108 @@ body {
 }
 #stats {
     position: absolute;
+    width: 30%;
+    height: 10px;
+
 }
 #tradeHeader {
     color: white;
     margin-left: 20px;
+    background: black;
+    border-radius: 8px;
+    padding-left: 10px;
+    width: 80%;
+    height: 25px;
+    line-height: 25px;
 }
 #statsHeader {
     color: white;
     margin-left: 20px;
+    background: black;
+    border-radius: 8px;
+    padding-left: 10px;
+    width: 80%;
+    height: 25px;
+    line-height: 25px;
 }
 #content {
     display: grid;
     grid-area: con;
+    justify-content: center;
 }
 #mainSleeper {
     display: none;
 }
 .userTrades {
     display: inline-block;
-    width: 100%;
+    width: 80%;
     margin-top: 20px;
     margin-left: 40px;
+    background: burlywood;
+    border-radius: 8px; 
+    padding-left: 10px; 
+    height: 25px;
+    line-height: 25px;
+}
+.statSub {
+    display: inline-block;
+    width: 80%;
+    color: black;
+    margin-top: 20px;
+    margin-left: 40px;
+    background: burlywood;
+    border-radius: 8px; 
+    padding-left: 10px; 
+    height: 25px;
+    line-height: 25px;
+}
+.btn-group button {
+    background-color: black; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+  }
+.btn-group button:last-child{
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+
+}
+.btn-group button:first-child{
+border-bottom-left-radius: 10px;
+border-top-left-radius: 10px;
+
+}
+.btn-group button:not(:last-child) {
+border-right: none; /* Prevent double borders */
 }
 
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+content: "";
+clear: both;
+display: table;
+}
 
+/* Add a background color on hover */
+.btn-group button:hover {
+background-color: #3e8e41;
+}
+#positionRankingsContent {
+    display:none;
+}
+#positionRanksTable {
+    margin-top: 30px;
+    justify-items: center;
+    align-items: center;
+    display:none;
+}
+table{
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+th, td{
+    padding: 10px 20px;
+    border: 1px solid #000;
+}

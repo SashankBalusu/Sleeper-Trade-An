@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>replit</title>
+    <title>Trade Analyzer</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
@@ -23,11 +23,40 @@
         </div>
         <div id = "stats">
           <p id = "statsHeader">Stats</p>
+          <a id = "positionRankings" class = statSub>Position rankings</a>
+          <a id = "randomStats" class = "statSub">Random stats</a>
+
 
         </div> 
       </div>
       <div id = "content">
+        <div id = "positionRankingsContent"> 
+          <div class="btn-group">
+            <button id = "qbRanks">QB</button>
+            <button id = "wrRanks">WR</button>
+            <button id = "rbRanks">RB</button>
+            <button id = "teRanks">TE</button>
+            <button id = "kRanks">K</button>
+          </div>
+          <table id = "positionRanksTable"> 
+            <thead>
+              <tr>
+                <th>
+                  Player
+                </th>
+                <th>
+                  Rank
+                </th>
+                <th>
+                  Raw Positional Value
+                </th>
+              </tr>
+            </thead>
+            <tbody id = "sleepertbody">
 
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     
