@@ -6,8 +6,8 @@ body {
     display:block;
     width: 100vw;
     height: 100vh;
-    background-image: url("chargerssitebackground.jpg");
-    filter: grayscale(100%);
+    /* background-image: url("chargerssitebackground.jpg"); 
+    filter: grayscale(100%);*/
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -17,8 +17,10 @@ body {
     color: #0cbd93;
 }
 #getStarted {
-    background: gray;
-    color: black;
+    border-radius: 8px;
+    width: 80px;
+    background: black;
+    color: white;
     text-decoration: none;
     padding-left: 10px;
     padding-right: 10px;

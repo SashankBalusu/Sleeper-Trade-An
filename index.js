@@ -170,10 +170,23 @@ submitLeagueID.addEventListener("click", function() {
 
 
     }
-  
+
     for (let i = 0; i < userIDList.length; i++) {
       roster = rosters[i]["players"]
-      roster.pop()
+      //console.log("roster" + roster)
+      if (i == 3){
+        console.log(roster)
+
+      }
+      for (let z = roster.length; z--;){
+        console.log(roster.length)
+        let pos = roster[z]
+        let pos2 = player[pos]["position"]
+        if (pos2 == "DEF"){
+          roster.splice(z, 1)          
+        }
+
+      }
       for (let j = 0; j < roster.length; j++) {
         playerID = roster[j]
         roster[j] = {}
@@ -184,11 +197,15 @@ submitLeagueID.addEventListener("click", function() {
         //add league type check for stats eventually, right now it will default ppr
         playerRank = stat[playerID]["rank_ppr"]
         roster[j]["player_rank"] = playerRank
+        playerheight = player[playerID]["height"].substring(0,player[playerID]['height'].length - 1)
+        roster[j]["height"] = playerheight
+        roster[j]["weight"] = player[playerID]["weight"]
+
       }
       ownerID = rosters[i]["owner_id"]
       rosterByOwner[ownerID] = roster
     }
-  
+    
     playerPositions = league["roster_positions"]
     playerPosCopy = []
     numPos = {}
