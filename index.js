@@ -91,6 +91,13 @@ function removeAllChildNodes(parent) {
       parent.removeChild(parent.firstChild);
   }
 }
+function heightToInches(height){
+  const arr = height.split("'")
+  let feet = parseInt(arr[0])
+  feet = feet*12
+  feet+= parseInt(arr[1])
+  return feet
+}
 // function onReady(callback) {
 //   var intervalId = window.setInterval(function() {
 //     if (document.getElementsByTagName('body')[0] !== undefined) {
@@ -119,6 +126,7 @@ const wrRanks = document.querySelector("#wrRanks")
 const rbRanks = document.querySelector("#rbRanks")
 const teRanks = document.querySelector("#teRanks")
 const kRanks = document.querySelector("#kRanks")
+const randomStats = document.querySelector("#randomStats")
 
 sleeperLeague.addEventListener("click", function(){
   console.log("hi")
@@ -174,12 +182,7 @@ submitLeagueID.addEventListener("click", function() {
     for (let i = 0; i < userIDList.length; i++) {
       roster = rosters[i]["players"]
       //console.log("roster" + roster)
-      if (i == 3){
-        console.log(roster)
-
-      }
       for (let z = roster.length; z--;){
-        console.log(roster.length)
         let pos = roster[z]
         let pos2 = player[pos]["position"]
         if (pos2 == "DEF"){
@@ -200,7 +203,6 @@ submitLeagueID.addEventListener("click", function() {
         playerheight = player[playerID]["height"].substring(0,player[playerID]['height'].length - 1)
         roster[j]["height"] = playerheight
         roster[j]["weight"] = player[playerID]["weight"]
-
       }
       ownerID = rosters[i]["owner_id"]
       rosterByOwner[ownerID] = roster
@@ -344,6 +346,45 @@ submitLeagueID.addEventListener("click", function() {
       displayRanks("K", positionRankingsTable, finalRankings)
 
     })
+    randomStats.addEventListener("click", function(){
+      weightObj = {}
+      heightObj = {}
+      console.log(rosterByOwner)
+
+      for (key in rosterByOwner){
+        let totalweight = 0
+        let totalHeight = 0
+        let roster = rosterByOwner[key]
+        for (let ownerRoster in roster){
+          //now u have each player
+          let playerWeight = parseInt(roster[ownerRoster]['weight'])
+          let playerHeight = roster[ownerRoster]['height']
+          console.log(playerHeight)
+          if (playerHeight){
+            let playerHeightInches = heightToInches(playerHeight)
+
+            totalHeight += playerHeightInches
+          }
+
+          if (playerWeight){
+            totalweight += playerWeight
+          }
+          
+        }  
+        heightObj[key] = totalHeight
+        weightObj[key] = totalweight
+      }
+      let weightObjSorted = Object.fromEntries(
+        Object.entries(weightObj).sort(([,a],[,b]) => a-b)
+      )
+      console.log(weightObjSorted)
+      let heightObjSorted = Object.fromEntries(
+        Object.entries(heightObj).sort(([,a],[,b]) => a-b)
+      )
+      console.log(heightObjSorted)
+    })
+
+
   //loadGif.setAttribute("style", "display: none")
 
   //document.write(finalRankings)
