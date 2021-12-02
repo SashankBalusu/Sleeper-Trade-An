@@ -127,6 +127,8 @@ const rbRanks = document.querySelector("#rbRanks")
 const teRanks = document.querySelector("#teRanks")
 const kRanks = document.querySelector("#kRanks")
 const randomStats = document.querySelector("#randomStats")
+const randomStatsContent = document.querySelector("#randomStatsContent")
+const heightweightswitch = document.querySelector("#heightweightswitch")
 
 sleeperLeague.addEventListener("click", function(){
   console.log("hi")
@@ -359,7 +361,6 @@ submitLeagueID.addEventListener("click", function() {
           //now u have each player
           let playerWeight = parseInt(roster[ownerRoster]['weight'])
           let playerHeight = roster[ownerRoster]['height']
-          console.log(playerHeight)
           if (playerHeight){
             let playerHeightInches = heightToInches(playerHeight)
 
@@ -377,12 +378,21 @@ submitLeagueID.addEventListener("click", function() {
       let weightObjSorted = Object.fromEntries(
         Object.entries(weightObj).sort(([,a],[,b]) => a-b)
       )
-      console.log(weightObjSorted)
       let heightObjSorted = Object.fromEntries(
         Object.entries(heightObj).sort(([,a],[,b]) => a-b)
       )
-      console.log(heightObjSorted)
+      randomStatsContent.setAttribute("style", "display:block;")
+      heightweightswitch.addEventListener("click", function(){
+        if (heightweightswitch.checked){
+          console.log(heightObjSorted)
+        }
+        else {
+          console.log(weightObjSorted)
+        }
+      })
     })
+    
+
 
 
   //loadGif.setAttribute("style", "display: none")
