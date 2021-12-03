@@ -342,8 +342,9 @@ submitLeagueID.addEventListener("click", function() {
         elements[i].addEventListener('click', myFunction, false);
     }
     positionRankings.addEventListener("click", function(){
+      randomStatsContent.setAttribute("style", "display:none")
       positionRankingsContent.setAttribute("style", "display:block")
-      console.log(finalRankings)
+      //console.log(finalRankings)
     })
     qbRanks.addEventListener("click", function(){
       removeAllChildNodes(document.querySelector("#sleepertbody"))
@@ -370,6 +371,8 @@ submitLeagueID.addEventListener("click", function() {
 
     })
     randomStats.addEventListener("click", function(){
+      removeAllChildNodes(document.querySelector("#sleepertbodystats"))
+      positionRankingsContent.setAttribute("style", "display:none")
       weightObj = {}
       heightObj = {}
       console.log(rosterByOwner)
