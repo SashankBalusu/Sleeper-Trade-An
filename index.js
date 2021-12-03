@@ -70,7 +70,7 @@ function displayRanks(pos, positionRankingsTable, finalRankings){
   positionRankingsTable.setAttribute("style", "display: block")
   const tbody = document.querySelector("#sleepertbody")
   counter = 0
-  for (key in finalRankings[pos]){
+  for (let key in finalRankings[pos]){
     counter ++
     let row_2 = document.createElement('tr');
     let row_2_data_1 = document.createElement('td');
@@ -79,6 +79,27 @@ function displayRanks(pos, positionRankingsTable, finalRankings){
     row_2_data_2.textContent = counter;
     let row_2_data_3 = document.createElement('td');
     row_2_data_3.textContent = finalRankings[pos][key];
+
+    row_2.appendChild(row_2_data_1);
+    row_2.appendChild(row_2_data_2);
+    row_2.appendChild(row_2_data_3);
+    tbody.appendChild(row_2); 
+  }
+}
+function displayStats(obj){
+  const heightWeightRanksTable = document.querySelector("#heightWeightRanksTable")
+  heightWeightRanksTable.setAttribute("style", "display: block")
+  const tbody = document.querySelector("#sleepertbodystats")
+  counter = 0
+  for (let key in obj){
+    counter ++
+    let row_2 = document.createElement('tr');
+    let row_2_data_1 = document.createElement('td');
+    row_2_data_1.textContent = key;
+    let row_2_data_2 = document.createElement('td');
+    row_2_data_2.textContent = counter;
+    let row_2_data_3 = document.createElement('td');
+    row_2_data_3.textContent = obj[key];
 
     row_2.appendChild(row_2_data_1);
     row_2.appendChild(row_2_data_2);
@@ -371,9 +392,10 @@ submitLeagueID.addEventListener("click", function() {
             totalweight += playerWeight
           }
           
-        }  
-        heightObj[key] = totalHeight
-        weightObj[key] = totalweight
+        }
+        let username = usernameObj[key]
+        heightObj[username] = totalHeight
+        weightObj[username] = totalweight
       }
       let weightObjSorted = Object.fromEntries(
         Object.entries(weightObj).sort(([,a],[,b]) => a-b)
@@ -381,13 +403,21 @@ submitLeagueID.addEventListener("click", function() {
       let heightObjSorted = Object.fromEntries(
         Object.entries(heightObj).sort(([,a],[,b]) => a-b)
       )
+      displayStats(weightObjSorted)
       randomStatsContent.setAttribute("style", "display:block;")
       heightweightswitch.addEventListener("click", function(){
         if (heightweightswitch.checked){
-          console.log(heightObjSorted)
+          removeAllChildNodes(document.querySelector("#sleepertbodystats"))
+          
+          displayStats(heightObjSorted)
+          //console.log(heightObjSorted)
         }
         else {
-          console.log(weightObjSorted)
+          removeAllChildNodes(document.querySelector("#sleepertbodystats"))
+
+          displayStats(weightObjSorted)
+
+          //console.log(weightObjSorted)
         }
       })
     })
