@@ -226,10 +226,32 @@ submitLeagueID.addEventListener("click", function() {
         playerheight = player[playerID]["height"].substring(0,player[playerID]['height'].length - 1)
         roster[j]["height"] = playerheight
         roster[j]["weight"] = player[playerID]["weight"]
+        let ptsppr = stat[playerID]["pts_ppr"]
+        let tds = 0
+        let ptsfromtds = 0
+        if (stat[playerID]["rec_td"]){
+          tds+=parseInt(stat[playerID]["rec_td"])
+          ptsfromtds+= tds*6
+
+        }
+        if (stat[playerID]["rush_td"]){
+          tds+=parseInt(stat[playerID]["rush_td"])
+          ptsfromtds+= parseInt(stat[playerID]["rush_td"])*6
+        }
+        if (stat[playerID]["pass_td"]){
+          tds+=parseInt(stat[playerID]["pass_td"])
+          ptsfromtds+=parseInt(stat[playerID]["pass_td"])
+        }
+        let percentpointsfromtds = ptsfromtds/ptsppr
+        let playerVal = (percentpointsfromtds*5) + (((ptsppr/13)/100)*50)//change 13 to amt of weeks elapsed found in nfl slate
+        roster[j]["tds"] = percentpointsfromtds
+
+        roster[j]["playerVal"] = playerVal
       }
       ownerID = rosters[i]["owner_id"]
       rosterByOwner[ownerID] = roster
     }
+    console.log(rosterByOwner)
     
     playerPositions = league["roster_positions"]
     playerPosCopy = []
@@ -349,25 +371,51 @@ submitLeagueID.addEventListener("click", function() {
     qbRanks.addEventListener("click", function(){
       removeAllChildNodes(document.querySelector("#sleepertbody"))
       displayRanks("QB", positionRankingsTable, finalRankings)
+      qbRanks.setAttribute("style", "background:#3e8e41")
+      wrRanks.setAttribute("style", "background:black")
+      rbRanks.setAttribute("style", "background:black")
+      teRanks.setAttribute("style", "background:black")
+      kRanks.setAttribute("style", "background:black")
+
     })
     wrRanks.addEventListener("click", function(){
       removeAllChildNodes(document.querySelector("#sleepertbody"))
       displayRanks("WR", positionRankingsTable, finalRankings)
+      wrRanks.setAttribute("style", "background:#3e8e41")
+      qbRanks.setAttribute("style", "background:black")
+      rbRanks.setAttribute("style", "background:black")
+      teRanks.setAttribute("style", "background:black")
+      kRanks.setAttribute("style", "background:black")
 
     })
     rbRanks.addEventListener("click", function(){
       removeAllChildNodes(document.querySelector("#sleepertbody"))
       displayRanks("RB", positionRankingsTable, finalRankings)
+      rbRanks.setAttribute("style", "background:#3e8e41")
+      wrRanks.setAttribute("style", "background:black")
+      qbRanks.setAttribute("style", "background:black")
+      teRanks.setAttribute("style", "background:black")
+      kRanks.setAttribute("style", "background:black")
 
     })
     teRanks.addEventListener("click", function(){
       removeAllChildNodes(document.querySelector("#sleepertbody"))
       displayRanks("TE", positionRankingsTable, finalRankings)
+      teRanks.setAttribute("style", "background:#3e8e41")
+      wrRanks.setAttribute("style", "background:black")
+      rbRanks.setAttribute("style", "background:black")
+      qbRanks.setAttribute("style", "background:black")
+      kRanks.setAttribute("style", "background:black")
 
     })
     kRanks.addEventListener("click", function(){
       removeAllChildNodes(document.querySelector("#sleepertbody"))
       displayRanks("K", positionRankingsTable, finalRankings)
+      kRanks.setAttribute("style", "background:#3e8e41")
+      wrRanks.setAttribute("style", "background:black")
+      rbRanks.setAttribute("style", "background:black")
+      teRanks.setAttribute("style", "background:black")
+      qbRanks.setAttribute("style", "background:black")
 
     })
     randomStats.addEventListener("click", function(){
