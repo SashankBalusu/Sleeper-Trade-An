@@ -131,6 +131,12 @@ function reverseWithMiddle(middle, num){
   let distance = middle - num
   return middle + distance
 }
+function makeRegColor(){
+  const elements = document.getElementsByClassName("userTrades");
+  for (let i = 0; i < elements.length; i++){
+    elements[i].setAttribute("style", "color: #717387")
+  }
+}
 // function onReady(callback) {
 //   var intervalId = window.setInterval(function() {
 //     if (document.getElementsByTagName('body')[0] !== undefined) {
@@ -344,6 +350,37 @@ submitLeagueID.addEventListener("click", function() {
         tempObj = {}
       }
     }
+    let numericRank = {}
+    let ranks = {}
+    for (let owner in rosterByOwner) {
+      for (let key in finalRankings){
+        let temp = finalRankings[key]
+        let iterate = 0
+        let index
+        for (let [user, value] of Object.entries(temp)) {
+          iterate++
+          if (user == usernameObj[owner]){
+            index = iterate
+          }
+        }
+        // for (let user in temp){
+        //   if (user == usernameObj[owner]){
+        //     index = iterate
+        //   }
+        //   else {
+        //     iterate ++
+        //   }
+        // }
+        ranks[key] = reverseWithMiddle(5.5, index)
+
+
+        // var index = temp.findIndex(p => p.attr1 == usernameObj[owner]);
+  
+      }
+      numericRank[usernameObj[owner]] = ranks
+      ranks = {}
+      console.log(numericRank)
+    }
     const trades = document.querySelector("#trades")
     const stats = document.querySelector("#stats")
     for (let key in usernameObj){
@@ -351,6 +388,7 @@ submitLeagueID.addEventListener("click", function() {
       a.textContent = usernameObj[key]
       a.setAttribute("style", "color:#717387")
       a.classList.add("userTrades")
+      a.id = usernameObj[key]
       trades.appendChild(a)
     }
     let margin = userIDList.length*25+265
@@ -361,23 +399,128 @@ submitLeagueID.addEventListener("click", function() {
     let counter = 0
 
     //add trades later on
-    let myFunction = function() {
-      counter++
-      if (counter <3){
-        alert("trades feature (hopefully) coming soon")
+    let myFunction = function(elements, i) {
+      console.log(elements[i].id)
 
+      makeRegColor()
+      elements[i].setAttribute("style", "color: white")
+      positionRankings.setAttribute("style", "color:#717387")
+      randomStats.setAttribute("style", "color:#717387")
+      //fix hardcoded names
+      var chartjson = {
+        "title": `${elements[i].id}'s ranks`,
+        "data": [{
+          "name": "QB",
+          "score": numericRank[elements[i].id]["QB"]
+        }, {
+          "name": "WR",
+          "score": numericRank[elements[i].id]["WR"]
+        }, {
+          "name": "RB",
+          "score": numericRank[elements[i].id]["RB"]
+        }, {
+          "name": "TE",
+          "score": numericRank[elements[i].id]["TE"]
+        }, {
+          "name": "K",
+          "score": numericRank[elements[i].id]["K"]
+        }],
+        "xtitle": "Secured Marks",
+        "ytitle": "Marks",
+        "ymax": 10,
+        "ykey": 'score',
+        "xkey": "name",
+        "prefix": "%"
       }
-      else {
-        alert("oml stop clicking I said the trade feature is coming soon")
+      
+      //chart colors
+      var colors = ['one',  'four', 'seven', 'ten', 'thirteen', 'fourteen'];
+      
+      //constants
+      var TROW = 'tr',
+        TDATA = 'td';
+      
+      var chart = document.createElement('div');
+      //create the chart canvas
+      var barchart = document.createElement('table');
+      //create the title row
+      var titlerow = document.createElement(TROW);
+      //create the title data
+      var titledata = document.createElement(TDATA);
+      titledata.setAttribute("style", "border: none;")
+      //make the colspan to number of records
+      titledata.setAttribute('colspan', chartjson.data.length + 1);
+      titledata.setAttribute('class', 'charttitle');
+      titledata.innerText = chartjson.title;
+      titlerow.appendChild(titledata);
+      barchart.appendChild(titlerow);
+      chart.appendChild(barchart);
+      
+      //create the bar row
+      var barrow = document.createElement(TROW);
+      
+      //lets add data to the chart
+      for (var i = 0; i < chartjson.data.length; i++) {
+        barrow.setAttribute('class', 'bars');
+        var prefix = chartjson.prefix || '';
+        //create the bar data
+        var bardata = document.createElement(TDATA);
+
+        bardata.setAttribute("style", "text-align: center; border: none;")
+        var bar = document.createElement('div');
+        bar.setAttribute('class', colors[i]);
+        let height = reverseWithMiddle(5.5, (chartjson.data[i][chartjson.ykey]))
+        bar.style.height = height*10 + prefix;
+        bar.style.width = "40px"
+        bardata.innerText = chartjson.data[i][chartjson.ykey];
+        bardata.appendChild(bar);
+        barrow.appendChild(bardata);
+      }
+      
+      //create legends
+      var legendrow = document.createElement(TROW);
+      var legend = document.createElement(TDATA);
+      legend.setAttribute("style", "border:none")
+      legend.setAttribute('class', 'legend');
+      legend.setAttribute('colspan', chartjson.data.length);
+      
+      //add legend data
+      for (var i = 0; i < chartjson.data.length; i++) {
+        var legbox = document.createElement('span');
+        legbox.setAttribute('class', 'legbox');
+        var barname = document.createElement('span');
+        barname.setAttribute('class', colors[i] + ' xaxisname');
+        var bartext = document.createElement('span');
+        bartext.innerText = chartjson.data[i][chartjson.xkey];
+        legbox.appendChild(barname);
+        legbox.appendChild(bartext);
+        legend.appendChild(legbox);
+      }
+      barrow.appendChild(legend);
+      barchart.appendChild(barrow);
+      barchart.appendChild(legendrow);
+      chart.appendChild(barchart);
+      document.getElementById('chart').innerHTML = chart.outerHTML;
+      // counter++
+      // if (counter <3){
+      //   alert("trades feature (hopefully) coming soon")
+
+      // }
+      // else {
+      //   alert("oml stop clicking I said the trade feature is coming soon")
         
-      }
+      // }
     };
 
     for (let i = 0; i < elements.length; i++) {
-        elements[i].addEventListener('click', myFunction, false);
+        elements[i].addEventListener('click', function(){
+          myFunction(elements, i)}
+        , false);
     }
     positionRankings.addEventListener("click", function(){
+      makeRegColor()
       positionRankings.setAttribute("style", "color: white")
+      randomStats.setAttribute("style", "color:#717387")
       randomStatsContent.setAttribute("style", "display:none")
       positionRankingsContent.setAttribute("style", "display:block")
       //console.log(finalRankings)
@@ -433,6 +576,9 @@ submitLeagueID.addEventListener("click", function() {
 
     })
     randomStats.addEventListener("click", function(){
+      makeRegColor()
+      positionRankings.setAttribute("style", "color: #717387")
+      randomStats.setAttribute("style", "color: white")
       removeAllChildNodes(document.querySelector("#sleepertbodystats"))
       positionRankingsContent.setAttribute("style", "display:none")
       weightObj = {}
