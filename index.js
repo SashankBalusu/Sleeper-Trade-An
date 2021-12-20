@@ -23,6 +23,14 @@ function getLowest(playerScores, numRanks) {
     }
     return count
 }
+function getHighest(playerScores, numRanks) {
+  count = 0
+  playerScores.sort(function(a, b){return b-a})
+  for (let i = 0; i < numRanks; i++) {
+    count += playerScores[i]
+  }
+  return count
+}
 function animateItemOut(sleeperLeague){
   sleeperLeague.animate([
     // keyframes
@@ -118,6 +126,10 @@ function heightToInches(height){
   feet = feet*12
   feet+= parseInt(arr[1])
   return feet
+}
+function reverseWithMiddle(middle, num){
+  let distance = middle - num
+  return middle + distance
 }
 // function onReady(callback) {
 //   var intervalId = window.setInterval(function() {
@@ -236,14 +248,16 @@ submitLeagueID.addEventListener("click", function() {
         }
         if (stat[playerID]["rush_td"]){
           tds+=parseInt(stat[playerID]["rush_td"])
-          ptsfromtds+= parseInt(stat[playerID]["rush_td"])*6
+          ptsfromtds+= (parseInt(stat[playerID]["rush_td"])*6)
         }
         if (stat[playerID]["pass_td"]){
           tds+=parseInt(stat[playerID]["pass_td"])
-          ptsfromtds+=parseInt(stat[playerID]["pass_td"])
+          ptsfromtds+=(parseInt(stat[playerID]["pass_td"])*4)
         }
-        let percentpointsfromtds = ptsfromtds/ptsppr
-        let playerVal = (percentpointsfromtds*5) + (((ptsppr/13)/100)*50)//change 13 to amt of weeks elapsed found in nfl slate
+        let gp = stat[playerID]["gp"]
+        let percentpointsfromtds = ptsfromtds/ptsppr*100
+        percentpointsfromtds = reverseWithMiddle(50, percentpointsfromtds)
+        let playerVal = ((percentpointsfromtds/100)*5) + (((ptsppr/gp)/100)*50)//change 13 to amt of weeks elapsed found in nfl slate
         roster[j]["tds"] = percentpointsfromtds
 
         roster[j]["playerVal"] = playerVal
@@ -298,11 +312,10 @@ submitLeagueID.addEventListener("click", function() {
           ownerPlayers = rosterByOwner[key]
           for (let player of ownerPlayers) {
             if (player["position"] == playerPosKey){
-              playerScores.push(player["player_rank"])
+              playerScores.push(player["playerVal"])
             }
           }
-          lowestScores[playerPosKey] = getLowest(playerScores, numPos[playerPosKey])
-  
+          lowestScores[playerPosKey] = getHighest(playerScores, numPos[playerPosKey])
           ownerPosRank[key] = lowestScores
           playerScores = []
         }
@@ -336,7 +349,7 @@ submitLeagueID.addEventListener("click", function() {
     for (let key in usernameObj){
       let a = document.createElement("a")
       a.textContent = usernameObj[key]
-      a.setAttribute("style", "color:black")
+      a.setAttribute("style", "color:#717387")
       a.classList.add("userTrades")
       trades.appendChild(a)
     }
@@ -364,6 +377,7 @@ submitLeagueID.addEventListener("click", function() {
         elements[i].addEventListener('click', myFunction, false);
     }
     positionRankings.addEventListener("click", function(){
+      positionRankings.setAttribute("style", "color: white")
       randomStatsContent.setAttribute("style", "display:none")
       positionRankingsContent.setAttribute("style", "display:block")
       //console.log(finalRankings)
@@ -480,3 +494,5 @@ submitLeagueID.addEventListener("click", function() {
 
   //document.write(finalRankings)
 })
+
+
