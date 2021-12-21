@@ -313,6 +313,9 @@ th, td{
 #heightWeightRanksTable {
     display:none;
 }
+#tradeContent {
+    display: none;
+}
 html,body {
   font-family: Consolas, monaco, monospace;
 }

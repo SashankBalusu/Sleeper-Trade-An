@@ -401,7 +401,9 @@ submitLeagueID.addEventListener("click", function() {
     //add trades later on
     let myFunction = function(elements, i) {
       console.log(elements[i].id)
-
+      positionRankingsContent.setAttribute("style", "display:none")
+      randomStatsContent.setAttribute("style", "display:none")
+      document.querySelector("#tradeContent").setAttribute("style", "display: block")
       makeRegColor()
       elements[i].setAttribute("style", "color: white")
       positionRankings.setAttribute("style", "color:#717387")
@@ -521,6 +523,7 @@ submitLeagueID.addEventListener("click", function() {
       makeRegColor()
       positionRankings.setAttribute("style", "color: white")
       randomStats.setAttribute("style", "color:#717387")
+      document.querySelector("#tradeContent").setAttribute("style", "display:none;")
       randomStatsContent.setAttribute("style", "display:none")
       positionRankingsContent.setAttribute("style", "display:block")
       //console.log(finalRankings)
@@ -577,6 +580,7 @@ submitLeagueID.addEventListener("click", function() {
     })
     randomStats.addEventListener("click", function(){
       makeRegColor()
+      document.querySelector("#tradeContent").setAttribute("style", "display:none;")
       positionRankings.setAttribute("style", "color: #717387")
       randomStats.setAttribute("style", "color: white")
       removeAllChildNodes(document.querySelector("#sleepertbodystats"))
