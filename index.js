@@ -107,12 +107,17 @@ function displayStats(obj){
   for (let key in obj){
     counter ++
     let row_2 = document.createElement('tr');
+    row_2.setAttribute("style", "border:none;")
     let row_2_data_1 = document.createElement('td');
     row_2_data_1.textContent = key;
+    row_2_data_1.setAttribute("style", "border:none;")
     let row_2_data_2 = document.createElement('td');
     row_2_data_2.textContent = counter;
+    row_2_data_2.setAttribute("style", "border:none;")
     let row_2_data_3 = document.createElement('td');
     row_2_data_3.textContent = obj[key];
+    row_2_data_3.setAttribute("style", "border:none;")
+
 
     row_2.appendChild(row_2_data_1);
     row_2.appendChild(row_2_data_2);
