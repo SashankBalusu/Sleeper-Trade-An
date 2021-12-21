@@ -81,12 +81,17 @@ function displayRanks(pos, positionRankingsTable, finalRankings){
   for (let key in finalRankings[pos]){
     counter ++
     let row_2 = document.createElement('tr');
+    row_2.setAttribute("style", "border:none;")
     let row_2_data_1 = document.createElement('td');
     row_2_data_1.textContent = key;
+    row_2_data_1.setAttribute("style", "border:none;")
     let row_2_data_2 = document.createElement('td');
     row_2_data_2.textContent = counter;
+    row_2_data_2.setAttribute("style", "border:none;")
     let row_2_data_3 = document.createElement('td');
     row_2_data_3.textContent = finalRankings[pos][key];
+    row_2_data_3.setAttribute("style", "border:none;")
+
 
     row_2.appendChild(row_2_data_1);
     row_2.appendChild(row_2_data_2);
@@ -263,7 +268,7 @@ submitLeagueID.addEventListener("click", function() {
         let gp = stat[playerID]["gp"]
         let percentpointsfromtds = ptsfromtds/ptsppr*100
         percentpointsfromtds = reverseWithMiddle(50, percentpointsfromtds)
-        let playerVal = ((percentpointsfromtds/100)*5) + (((ptsppr/gp)/100)*50)//change 13 to amt of weeks elapsed found in nfl slate
+        let playerVal = ((percentpointsfromtds/100)*5) + (((ptsppr/gp)/100)*50)
         roster[j]["tds"] = percentpointsfromtds
 
         roster[j]["playerVal"] = playerVal

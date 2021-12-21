@@ -191,6 +191,10 @@ background-color: #3e8e41;
     justify-items: center;
     align-items: center;
     display:none;
+    background: #222430;
+    height: fit-content;
+    color: white;
+    border-radius: 10px;
 }
 table{
     border-collapse: collapse;
