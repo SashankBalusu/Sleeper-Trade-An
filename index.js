@@ -226,11 +226,19 @@ submitLeagueID.addEventListener("click", function() {
     let rosterData = httpGet(`https://api.sleeper.app/v1/league/${leagueID}/rosters`)
     
     const rosters = JSON.parse(rosterData)
-    let nflStateData = httpGet(" https://api.sleeper.app/v1/state/nfl")
+    let nflStateData = httpGet("https://api.sleeper.app/v1/state/nfl")
     const nflState = JSON.parse(nflStateData)
     let weeksPassed = nflState["leg"]
     console.log(weeksPassed)
 
+    let weeks = []
+    let matchupData
+    let matchup
+    for (let i = 1; i < weeksPassed; i++){
+      matchupData = httpGet(`https://api.sleeper.app/v1/league/650072723749421056/matchups/${(i)}`)
+      matchup = JSON.parse(matchupData)
+      weeks[i] = matchup
+    }
     numUsers = league["total_rosters"]
 
     let usernameObj = {}
@@ -560,11 +568,13 @@ submitLeagueID.addEventListener("click", function() {
       console.log(uID)
       console.log(usernameObj)
       for (let i = 1; i < weeksPassed; i++){
-        let matchupData = httpGet(`https://api.sleeper.app/v1/league/650072723749421056/matchups/${(i)}`)
-        const matchup = JSON.parse(matchupData)
+        // let matchupData = httpGet(`https://api.sleeper.app/v1/league/650072723749421056/matchups/${(i)}`)
+        // const matchup = JSON.parse(matchupData)
+        let currMatchup = weeks[i]
+
         for (let j = 0; j < matchup.length; j++){
-          if (matchup[j]["roster_id"] == rosterID){
-            dataArr.push(matchup[j]["points"])
+          if (currMatchup[j]["roster_id"] == rosterID){
+            dataArr.push(currMatchup[j]["points"])
           }
         }
       }
