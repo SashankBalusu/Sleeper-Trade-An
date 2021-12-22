@@ -199,6 +199,7 @@ background-color: #3e8e41;
 table{
     border-collapse: collapse;
     border-spacing: 0;
+
 }
 th, td{
     padding: 10px 20px;
@@ -333,7 +334,7 @@ html,body {
 }
 
 table {
-  width: 100%;
+  width: 400px;
   height: 400px;
 }
 
@@ -453,4 +454,14 @@ table {
 
 .twenty {
   background: #7F8C8D;
+}
+.wrapper{
+  width: 400px;
+  display:block;
+  overflow:hidden;
+  margin:0 auto;
+  padding: 60px 50px;
+  background:#222430;
+  border-radius:10px;
+  margin-top: 20px;
 }

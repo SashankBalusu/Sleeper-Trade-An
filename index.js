@@ -147,6 +147,9 @@ function makeRegColor(){
     elements[i].setAttribute("style", "color: #717387")
   }
 }
+function getKeyByValue(object, value) {
+  return Object.keys(object).find(key => object[key] === value);
+}
 // function onReady(callback) {
 //   var intervalId = window.setInterval(function() {
 //     if (document.getElementsByTagName('body')[0] !== undefined) {
@@ -178,6 +181,10 @@ const kRanks = document.querySelector("#kRanks")
 const randomStats = document.querySelector("#randomStats")
 const randomStatsContent = document.querySelector("#randomStatsContent")
 const heightweightswitch = document.querySelector("#heightweightswitch")
+
+
+let myChart
+
 
 sleeperLeague.addEventListener("click", function(){
   console.log("hi")
@@ -219,17 +226,29 @@ submitLeagueID.addEventListener("click", function() {
     let rosterData = httpGet(`https://api.sleeper.app/v1/league/${leagueID}/rosters`)
     
     const rosters = JSON.parse(rosterData)
+    let nflStateData = httpGet(" https://api.sleeper.app/v1/state/nfl")
+    const nflState = JSON.parse(nflStateData)
+    let weeksPassed = nflState["leg"]
+    console.log(weeksPassed)
+
     numUsers = league["total_rosters"]
+
     let usernameObj = {}
+    let rosterIDObj = {}
     for (let i = 0; i < numUsers; i++) {
       userID = users[i]["user_id"]
       userIDList.push(userID)
       let username = users[i]["display_name"]
       usernameObj[userID] = username
+      for (let j = 0; j < numUsers; j++){
+        if (users[i]["user_id"] == rosters[j]["owner_id"]){
+          rosterIDObj[users[i]["user_id"]] = rosters[j]["roster_id"]
+          break
+        }
+      }
 
 
     }
-
     for (let i = 0; i < userIDList.length; i++) {
       roster = rosters[i]["players"]
       //console.log("roster" + roster)
@@ -409,33 +428,33 @@ submitLeagueID.addEventListener("click", function() {
     let counter = 0
 
     //add trades later on
-    let myFunction = function(elements, i) {
-      console.log(elements[i].id)
+    let myFunction = function(elements, loc) {
+      console.log(elements[loc].id)
       positionRankingsContent.setAttribute("style", "display:none")
       randomStatsContent.setAttribute("style", "display:none")
       document.querySelector("#tradeContent").setAttribute("style", "display: block")
       makeRegColor()
-      elements[i].setAttribute("style", "color: white")
+      elements[loc].setAttribute("style", "color: white")
       positionRankings.setAttribute("style", "color:#717387")
       randomStats.setAttribute("style", "color:#717387")
       //fix hardcoded names
       var chartjson = {
-        "title": `${elements[i].id}'s ranks`,
+        "title": `${elements[loc].id}'s ranks`,
         "data": [{
           "name": "QB",
-          "score": numericRank[elements[i].id]["QB"]
+          "score": numericRank[elements[loc].id]["QB"]
         }, {
           "name": "WR",
-          "score": numericRank[elements[i].id]["WR"]
+          "score": numericRank[elements[loc].id]["WR"]
         }, {
           "name": "RB",
-          "score": numericRank[elements[i].id]["RB"]
+          "score": numericRank[elements[loc].id]["RB"]
         }, {
           "name": "TE",
-          "score": numericRank[elements[i].id]["TE"]
+          "score": numericRank[elements[loc].id]["TE"]
         }, {
           "name": "K",
-          "score": numericRank[elements[i].id]["K"]
+          "score": numericRank[elements[loc].id]["K"]
         }],
         "xtitle": "Secured Marks",
         "ytitle": "Marks",
@@ -522,6 +541,98 @@ submitLeagueID.addEventListener("click", function() {
       //   alert("oml stop clicking I said the trade feature is coming soon")
         
       // }
+      var ctx = document.getElementById('myChart').getContext("2d");
+
+      var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+      gradientStroke.addColorStop(0, '#80b6f4');
+
+      gradientStroke.addColorStop(1, '#f49080');
+      let labelArr = []
+      for (let i = 0; i < weeksPassed; i++){
+        labelArr.push("Week " + (i + 1))
+      }
+      let dataArr = []
+      let name = elements[loc].id
+      console.log(name)
+      let uID = getKeyByValue(usernameObj, name)
+      let rosterID = rosterIDObj[uID]
+      console.log(rosterID)
+      console.log(uID)
+      console.log(usernameObj)
+      for (let i = 1; i < weeksPassed; i++){
+        let matchupData = httpGet(`https://api.sleeper.app/v1/league/650072723749421056/matchups/${(i)}`)
+        const matchup = JSON.parse(matchupData)
+        for (let j = 0; j < matchup.length; j++){
+          if (matchup[j]["roster_id"] == rosterID){
+            dataArr.push(matchup[j]["points"])
+          }
+        }
+      }
+      if (myChart){
+        myChart.destroy()
+      }
+      myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: labelArr,
+              datasets: [{
+                  label: "Data",
+                  borderColor: gradientStroke,
+                  pointBorderColor: gradientStroke,
+                  pointBackgroundColor: gradientStroke,
+                pointHoverBackgroundColor: gradientStroke,
+                  pointHoverBorderColor: gradientStroke,
+                  pointBorderWidth: 10,
+                  pointHoverRadius: 10,
+                  pointHoverBorderWidth: 1,
+                  pointRadius: 3,
+                  fill: false,
+                  borderWidth: 4,
+                  data: dataArr
+              }]
+          },
+          options: {          
+              legend: {
+                  position: "bottom",
+                  fontColor: "white"
+              },
+              scales: {
+                  yAxes: [{
+                      ticks: {
+                          fontColor: "rgba(255,255,255, 1)",
+                          fontStyle: "bold",
+                          beginAtZero: true,
+                          maxTicksLimit: 5,
+                          padding: 20
+                      },
+                      gridLines: {
+                          drawTicks: false,
+                          display: false
+                      }
+
+                  }],
+                  xAxes: [{
+                      gridLines: {
+                          zeroLineColor: "transparent"
+                      },
+                      ticks: {
+                          padding: 20,
+                          fontColor: "rgba(255,255,255, 1)",
+                          fontStyle: "bold"
+                      }
+                  }]
+              },
+              plugins: {
+                title: {
+                    display: true,
+                    text: `${name}'s scores`
+                }
+              }
+              
+          }
+      });
+    dataArr = []
+    labelArr = []  
     };
 
     for (let i = 0; i < elements.length; i++) {
