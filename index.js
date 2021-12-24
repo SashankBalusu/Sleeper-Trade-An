@@ -595,9 +595,17 @@ submitLeagueID.addEventListener("click", function() {
       console.log(firstWeekPts)
       console.log(lastWeekPts)
       if (firstWeekPts > lastWeekPts){
-        gradientStroke.addColorStop(0, 'rgba(255, 51, 51, 1)');
+        if ((firstWeekPts -10) > lastWeekPts) {
+          gradientStroke.addColorStop(0, 'rgba(255, 51, 51, 1)');
 
-        gradientStroke.addColorStop(1, 'rgba(255, 51, 51, 0.25)');
+          gradientStroke.addColorStop(1, 'rgba(255, 51, 51, 0.25)');
+        }
+        else {
+          gradientStroke.addColorStop(0, 'rgba(160, 160, 160, 1)');
+
+          gradientStroke.addColorStop(1, 'rgba(160, 160, 160, 0.25)');
+        }
+        
       }
       else {
         gradientStroke.addColorStop(0, 'rgba(102, 204, 0, 1)');
