@@ -552,9 +552,7 @@ submitLeagueID.addEventListener("click", function() {
       var ctx = document.getElementById('myChart').getContext("2d");
 
       var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-      gradientStroke.addColorStop(0, '#80b6f4');
-
-      gradientStroke.addColorStop(1, '#f49080');
+      
       let labelArr = []
       for (let i = 0; i < weeksPassed; i++){
         labelArr.push("Week " + (i + 1))
@@ -578,6 +576,35 @@ submitLeagueID.addEventListener("click", function() {
           }
         }
       }
+      let firstWeekPts = 0
+      let lastWeekPts = 0
+      for (let i = 0; i < matchup.length; i++){
+        let firstmatchup = weeks[1]
+        let lastmatchup = weeks[weeksPassed-1]
+        console.log("last matchup" + firstmatchup)
+        console.log("i" + i + " " + firstmatchup[0])
+
+        if (firstmatchup[i]["roster_id"] == rosterID){
+          firstWeekPts = firstmatchup[i]["points"]
+        }
+        if (lastmatchup[i]["roster_id"] == rosterID){
+          lastWeekPts = lastmatchup[i]["points"]
+        }
+
+      }
+      console.log(firstWeekPts)
+      console.log(lastWeekPts)
+      if (firstWeekPts > lastWeekPts){
+        gradientStroke.addColorStop(0, 'rgba(255, 51, 51, 1)');
+
+        gradientStroke.addColorStop(1, 'rgba(255, 51, 51, 0.25)');
+      }
+      else {
+        gradientStroke.addColorStop(0, 'rgba(102, 204, 0, 1)');
+
+        gradientStroke.addColorStop(1, 'rgba(102, 204, 0, 0.25)');
+      }
+      
       if (myChart){
         myChart.destroy()
       }
@@ -627,7 +654,7 @@ submitLeagueID.addEventListener("click", function() {
                       },
                       ticks: {
                           padding: 20,
-                          fontColor: "rgba(255,255,255, 1)",
+                          fontColor: "rgba(0,0,0, 1)",
                           fontStyle: "bold"
                       }
                   }]
