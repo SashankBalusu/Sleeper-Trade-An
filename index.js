@@ -184,6 +184,7 @@ const heightweightswitch = document.querySelector("#heightweightswitch")
 
 
 let myChart
+let createOwnCount = 0
 
 
 sleeperLeague.addEventListener("click", function(){
@@ -819,6 +820,7 @@ submitLeagueID.addEventListener("click", function() {
     const createOwn = document.querySelector("#createOwn")
     createOwn.addEventListener("click", function(){
       makeRegColor()
+      createOwnCount++
       createOwn.setAttribute("style", "color: white")
       positionRankings.setAttribute("style", "color:#717387")
       randomStats.setAttribute("style", "color:#717387")
@@ -830,55 +832,57 @@ submitLeagueID.addEventListener("click", function() {
       const addTeam1 = document.getElementById("addTeam1")
       const minusTeam1 = document.getElementById("minusTeam1")
       chooseTradeContent.setAttribute("style", "display:grid;")
-      addTeam1.addEventListener("click", function(){
-        const team1con = document.querySelector("#team1con")
-        let input = document.createElement("input")
-        input.type = "text"
-        let len = team1con.children.length
-        if (len == 2){
-          input.setAttribute("style", "border: none;border-right: solid black; border-bottom: solid black; border-radius: 10px 0 0 0")
+      if (createOwnCount == 1){
+        addTeam1.addEventListener("click", function(){
+          const team1con = document.querySelector("#team1con")
+          let input = document.createElement("input")
+          input.type = "text"
+          let len = team1con.children.length
+          if (len == 2){
+            input.setAttribute("style", "border: none;border-right: solid black; border-bottom: solid black; border-radius: 10px 0 0 0")
 
-        }
-        else {
-          input.setAttribute("style", "border: none;border-right: solid black; border-bottom: solid black;")
+          }
+          else {
+            input.setAttribute("style", "border: none;border-right: solid black; border-bottom: solid black;")
 
-        }
-        input.id = "team1player"+(len-1)
-        input.classList.add("playerInput")
-        input.placeholder = "Team 1"
-        console.log(team1con.children.length)
-        team1con.insertBefore(input, team1con.children[team1con.children.length -2])
-      })
-      minusTeam1.addEventListener("click", function(){
-        const team1con = document.querySelector("#team1con")
-        team1con.removeChild(team1con.children[team1con.children.length -3])
-      })
-      const addTeam2 = document.getElementById("addTeam2")
-      const minusTeam2 = document.getElementById("minusTeam2")
-      addTeam2.addEventListener("click", function(){
-        const team2con = document.querySelector("#team2con")
+          }
+          input.id = "team1player"+(len-1)
+          input.classList.add("playerInput")
+          input.placeholder = "Team 1"
+          console.log(team1con.children.length)
+          team1con.insertBefore(input, team1con.children[team1con.children.length -2])
+        })
+        minusTeam1.addEventListener("click", function(){
+          const team1con = document.querySelector("#team1con")
+          team1con.removeChild(team1con.children[team1con.children.length -3])
+        })
+        const addTeam2 = document.getElementById("addTeam2")
+        const minusTeam2 = document.getElementById("minusTeam2")
+        addTeam2.addEventListener("click", function(){
+          const team2con = document.querySelector("#team2con")
 
-        let input = document.createElement("input")
-        input.type = "text"
-        let len = team2con.children.length
-        if (len == 2){
-          input.setAttribute("style", "border: none;border-left: solid black; border-bottom: solid black; border-radius: 0 10px 0 0")
+          let input = document.createElement("input")
+          input.type = "text"
+          let len = team2con.children.length
+          if (len == 2){
+            input.setAttribute("style", "border: none;border-left: solid black; border-bottom: solid black; border-radius: 0 10px 0 0")
 
-        }
-        else {
-          input.setAttribute("style", "border: none;border-left: solid black; border-bottom: solid black;")
+          }
+          else {
+            input.setAttribute("style", "border: none;border-left: solid black; border-bottom: solid black;")
 
-        }
-        input.id = "team2player"+(len-1)
-        input.classList.add("playerInput")
-        input.placeholder = "Team 2"
-        console.log(team2con.children.length)
-        team2con.insertBefore(input, team2con.children[team2con.children.length -2])
-      })
-      minusTeam2.addEventListener("click", function(){
-        const team2con = document.querySelector("#team2con")
-        team2con.removeChild(team2con.children[team2con.children.length -3])
-      })
+          }
+          input.id = "team2player"+(len-1)
+          input.classList.add("playerInput")
+          input.placeholder = "Team 2"
+          console.log(team2con.children.length)
+          team2con.insertBefore(input, team2con.children[team2con.children.length -2])
+        })
+        minusTeam2.addEventListener("click", function(){
+          const team2con = document.querySelector("#team2con")
+          team2con.removeChild(team2con.children[team2con.children.length -3])
+        })
+      }
     })
     const submitTrade = document.querySelector("#submitTrade")
     submitTrade.addEventListener("click", function(){
