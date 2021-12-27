@@ -465,3 +465,30 @@ table {
   border-radius:10px;
   margin-top: 20px;
 }
+#chooseTradeContent {
+  display: none;
+  grid-template-areas: "team1 team2";
+  height: 150px;
+  /* grid-template-columns: 50% 50%  */
+}
+#team1con {
+  display: grid;
+  grid-area: team1;
+}
+#team2con {
+  display: grid;
+  grid-area: team2;
+}
+.playerInput {
+  /* height: 30px; */
+}
+.createTradeBut {
+  /* height: 20px;; */
+}
+#submitTrade {
+  width: 200%
+}
+input {
+  text-align: center;
+}
+

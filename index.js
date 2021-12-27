@@ -420,6 +420,12 @@ submitLeagueID.addEventListener("click", function() {
     }
     const trades = document.querySelector("#trades")
     const stats = document.querySelector("#stats")
+    let customTrade = document.createElement("a")
+    customTrade.textContent = "Create your own"
+    customTrade.setAttribute("style", "color:#717387")
+    customTrade.classList.add("userTrades")
+    customTrade.id = "createOwn"
+    trades.appendChild(customTrade)
     for (let key in usernameObj){
       let a = document.createElement("a")
       a.textContent = usernameObj[key]
@@ -437,12 +443,16 @@ submitLeagueID.addEventListener("click", function() {
 
     //add trades later on
     let myFunction = function(elements, loc) {
-      console.log(elements[loc].id)
+      if (elements[loc].id == "createOwn"){
+        return
+      }
       positionRankingsContent.setAttribute("style", "display:none")
       randomStatsContent.setAttribute("style", "display:none")
       document.querySelector("#tradeContent").setAttribute("style", "display: block")
+      document.querySelector("#chooseTradeContent").setAttribute("style", "display:none;")
       makeRegColor()
       elements[loc].setAttribute("style", "color: white")
+      createOwn.setAttribute("style", "color: #717387")
       positionRankings.setAttribute("style", "color:#717387")
       randomStats.setAttribute("style", "color:#717387")
       //fix hardcoded names
@@ -689,7 +699,9 @@ submitLeagueID.addEventListener("click", function() {
       makeRegColor()
       positionRankings.setAttribute("style", "color: white")
       randomStats.setAttribute("style", "color:#717387")
+      createOwn.setAttribute("style", "color: #717387")
       document.querySelector("#tradeContent").setAttribute("style", "display:none;")
+      document.querySelector("#chooseTradeContent").setAttribute("style", "display:none;")
       randomStatsContent.setAttribute("style", "display:none")
       positionRankingsContent.setAttribute("style", "display:block")
       //console.log(finalRankings)
@@ -748,9 +760,11 @@ submitLeagueID.addEventListener("click", function() {
       makeRegColor()
       document.querySelector("#tradeContent").setAttribute("style", "display:none;")
       positionRankings.setAttribute("style", "color: #717387")
+      createOwn.setAttribute("style", "color: #717387")
       randomStats.setAttribute("style", "color: white")
       removeAllChildNodes(document.querySelector("#sleepertbodystats"))
       positionRankingsContent.setAttribute("style", "display:none")
+      document.querySelector("#chooseTradeContent").setAttribute("style", "display:none;")
       weightObj = {}
       heightObj = {}
       console.log(rosterByOwner)
@@ -801,6 +815,116 @@ submitLeagueID.addEventListener("click", function() {
           //console.log(weightObjSorted)
         }
       })
+    })
+    const createOwn = document.querySelector("#createOwn")
+    createOwn.addEventListener("click", function(){
+      makeRegColor()
+      createOwn.setAttribute("style", "color: white")
+      positionRankings.setAttribute("style", "color:#717387")
+      randomStats.setAttribute("style", "color:#717387")
+      positionRankingsContent.setAttribute("style", "display:none")
+      randomStatsContent.setAttribute("style", "display:none")
+      
+      document.querySelector("#tradeContent").setAttribute("style", "display: none")
+      const chooseTradeContent = document.querySelector("#chooseTradeContent")
+      const addTeam1 = document.getElementById("addTeam1")
+      const minusTeam1 = document.getElementById("minusTeam1")
+      chooseTradeContent.setAttribute("style", "display:grid;")
+      addTeam1.addEventListener("click", function(){
+        const team1con = document.querySelector("#team1con")
+        let input = document.createElement("input")
+        input.type = "text"
+        let len = team1con.children.length
+        if (len == 2){
+          input.setAttribute("style", "border: none;border-right: solid black; border-bottom: solid black; border-radius: 10px 0 0 0")
+
+        }
+        else {
+          input.setAttribute("style", "border: none;border-right: solid black; border-bottom: solid black;")
+
+        }
+        input.id = "team1player"+(len-1)
+        input.classList.add("playerInput")
+        input.placeholder = "Team 1"
+        console.log(team1con.children.length)
+        team1con.insertBefore(input, team1con.children[team1con.children.length -2])
+      })
+      minusTeam1.addEventListener("click", function(){
+        const team1con = document.querySelector("#team1con")
+        team1con.removeChild(team1con.children[team1con.children.length -3])
+      })
+      const addTeam2 = document.getElementById("addTeam2")
+      const minusTeam2 = document.getElementById("minusTeam2")
+      addTeam2.addEventListener("click", function(){
+        const team2con = document.querySelector("#team2con")
+
+        let input = document.createElement("input")
+        input.type = "text"
+        let len = team2con.children.length
+        if (len == 2){
+          input.setAttribute("style", "border: none;border-left: solid black; border-bottom: solid black; border-radius: 0 10px 0 0")
+
+        }
+        else {
+          input.setAttribute("style", "border: none;border-left: solid black; border-bottom: solid black;")
+
+        }
+        input.id = "team2player"+(len-1)
+        input.classList.add("playerInput")
+        input.placeholder = "Team 2"
+        console.log(team2con.children.length)
+        team2con.insertBefore(input, team2con.children[team2con.children.length -2])
+      })
+      minusTeam2.addEventListener("click", function(){
+        const team2con = document.querySelector("#team2con")
+        team2con.removeChild(team2con.children[team2con.children.length -3])
+      })
+    })
+    const submitTrade = document.querySelector("#submitTrade")
+    submitTrade.addEventListener("click", function(){
+      const team1con = document.querySelector("#team1con")
+      team1players = []
+      for (let i = 1; i < (team1con.children.length - 1); i++){
+        let select = document.querySelector("#team1player" + i)
+        team1players.push(select.value)
+      }
+      const team2con = document.querySelector("#team2con")
+      team2players = []
+      for (let i = 1; i < (team2con.children.length - 1); i++){
+        let select = document.querySelector("#team2player" + i)
+        team2players.push(select.value)
+      }
+      let team1Val = 0
+      for (let playerName of team1players){
+        playerName = playerName.toLowerCase()
+        playerName = playerName.replace(/\s+/g, '');
+
+        for (let owner in rosterByOwner){
+          let roster = rosterByOwner[owner]
+          for (let i = 0; i < roster.length; i++){
+            if (roster[i]["player_name"] == playerName){
+              team1Val += roster[i]["playerVal"]
+            }
+          }
+
+        }
+      }
+      let team2Val = 0
+      for (let playerName of team2players){
+        playerName = playerName.toLowerCase()
+        playerName = playerName.replace(/\s+/g, '');
+
+        for (let owner in rosterByOwner){
+          let roster = rosterByOwner[owner]
+          for (let i = 0; i < roster.length; i++){
+            if (roster[i]["player_name"] == playerName){
+              team2Val += roster[i]["playerVal"]
+            }
+          }
+
+        }
+      }
+      console.log(team1Val + " " + team2Val)
     })
     
 
