@@ -491,4 +491,15 @@ table {
 input {
   text-align: center;
 }
+.tradeInsightP {
+  color: white;
+}
+#tradeInsights {
+  background: #222430;
+  border-radius: 10px;
+  padding: 10px 10px 10px 10px;
+}
+#insightsHeader {
+  text-align: center;
+}
 

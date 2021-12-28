@@ -419,6 +419,29 @@ submitLeagueID.addEventListener("click", function() {
       ranks = {}
       console.log(numericRank)
     }
+    let positionalNeed = {}
+    for (let key in numericRank){
+      let posNeedGive = {}
+      let need = []
+      let give = []
+      let rank = numericRank[key]
+      for (let innerkey in rank){
+        let posRank = rank[innerkey]
+        if (posRank >= (userIDList.length/2)){
+          need.push(innerkey)
+        }
+        else {
+          give.push(innerkey)
+        }
+
+
+      }
+      posNeedGive["need"] = need
+      posNeedGive["give"] = give
+      positionalNeed[key] = posNeedGive
+      posNeedGive = {}
+    }
+    console.log(positionalNeed)
     const trades = document.querySelector("#trades")
     const stats = document.querySelector("#stats")
     let customTrade = document.createElement("a")
@@ -899,6 +922,8 @@ submitLeagueID.addEventListener("click", function() {
         team2players.push(select.value)
       }
       let team1Val = 0
+      let team1owner
+      let team1playerPositions = []
       for (let playerName of team1players){
         playerName = playerName.toLowerCase()
         playerName = playerName.replace(/\s+/g, '');
@@ -908,12 +933,16 @@ submitLeagueID.addEventListener("click", function() {
           for (let i = 0; i < roster.length; i++){
             if (roster[i]["player_name"] == playerName){
               team1Val += roster[i]["playerVal"]
+              team1owner = owner
+              team1playerPositions.push(roster[i]["position"])
             }
           }
 
         }
       }
       let team2Val = 0
+      let team2owner
+      let team2playerPositions = []
       for (let playerName of team2players){
         playerName = playerName.toLowerCase()
         playerName = playerName.replace(/\s+/g, '');
@@ -923,12 +952,109 @@ submitLeagueID.addEventListener("click", function() {
           for (let i = 0; i < roster.length; i++){
             if (roster[i]["player_name"] == playerName){
               team2Val += roster[i]["playerVal"]
+              team2owner = owner
+              team2playerPositions.push(roster[i]["position"])
             }
           }
 
         }
       }
       console.log(team1Val + " " + team2Val)
+      const tradeInsights = document.querySelector("#tradeInsights")
+      const chooseTradeForm = document.querySelector("#chooseTradeForm")
+      chooseTradeForm.setAttribute("style", "display:none;")
+      tradeInsights.setAttribute("style", "display: block;")
+      let strongerfor = document.createElement("p")
+      strongerfor.classList.add("tradeInsightP")
+      if (team1Val < team2Val){
+        strongerfor.textContent = "Trade is better for team 1"
+      }
+      else {
+        strongerfor.textContent = "Trade is better for team 2"
+      }
+      tradeInsights.appendChild(strongerfor)
+
+      let team1ownername = document.createElement("p")
+      team1ownername.classList.add("tradeInsightP")
+      team1ownername.textContent = "Guess: Team 1 is '" + usernameObj[team1owner] + "'"
+
+      tradeInsights.appendChild(team1ownername)
+      
+      let team2ownername = document.createElement("p")
+      team2ownername.classList.add("tradeInsightP")
+      team2ownername.textContent = "Guess: Team 2 is '" + usernameObj[team2owner] + "'"
+
+      tradeInsights.appendChild(team2ownername)
+      team1fulfilled = false;
+      let currentOwnerNeedGive = positionalNeed[usernameObj[team1owner]]
+
+      for (let i = 0; i <team1playerPositions.length; i++){
+        for (let j = 0; j < currentOwnerNeedGive["need"].length; j++){
+          if (team1playerPositions[i] == currentOwnerNeedGive[j]){
+            team1fulfilled = true
+            break
+          }
+        }
+      }
+      team2fulfilled = false;
+      currentOwnerNeedGive = positionalNeed[usernameObj[team2owner]]
+
+      for (let i = 0; i <team2playerPositions.length; i++){
+        for (let j = 0; j < currentOwnerNeedGive["need"].length; j++){
+          if (team2playerPositions[i] == currentOwnerNeedGive[j]){
+            team2fulfilled = true
+            break
+          }
+        }
+      }
+      let fulfilled = document.createElement("p")
+      fulfilled.classList.add("tradeInsightP")
+      if (team1fulfilled == true && team2fulfilled == true){
+        fulfilled.textContent = "Trade fulfilled positional needs for only team 2"
+
+      }
+      else if (team1fulfilled == true && team2fulfilled == false){
+        fulfilled.textContent = "Trade fulfilled positional needs for team 1"
+
+      }
+      else if (team1fulfilled == false && team2fulfilled == true){
+        fulfilled.textContent = "Trade fulfilled positional needs for only team 2"
+
+      }
+      else {
+        fulfilled.textContent = "Trade fulfilled positional needs for no one"
+
+      }
+
+      tradeInsights.appendChild(fulfilled)
+      
+      let team1units = document.createElement("p")
+      team1units.classList.add("tradeInsightP")
+      team1units.textContent = "Team 1 is recieving " + team2Val.toFixed(2) +  " units in value (higher is better)"
+
+      tradeInsights.appendChild(team1units)
+
+      let team2units = document.createElement("p")
+      team2units.classList.add("tradeInsightP")
+      team2units.textContent = "Team 2 is recieving " + team1Val.toFixed(2) +  " units in value (higher is better)"
+
+      tradeInsights.appendChild(team2units)
+      let backbutton = document.createElement("button")
+      backbutton.textContent = "Go back"
+      backbutton.id = "createOwnBack"
+      
+      tradeInsights.appendChild(backbutton)
+      const createOwnBack = document.querySelector("#createOwnBack")
+      createOwnBack.addEventListener("click", function(){
+        chooseTradeForm.setAttribute("style", "display: block;")
+        tradeInsights.setAttribute("style", "display: none;")
+        while (tradeInsights.children.length > 1){
+          tradeInsights.removeChild(tradeInsights.children[tradeInsights.children.length -1])
+
+        }
+      })
+
+
     })
     
 

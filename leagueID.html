@@ -34,29 +34,33 @@
       </div>
       <div id = "content">
         <div id = "chooseTradeContent"> 
-          <div id = "team1con">
-            <input placeholder = "Team 1" type = "text" id = "team1player1" class = "playerInput" style="
-            border-radius: 10px 0 0 0;
-            border: none;
-            border-right: solid black;
-            border-bottom: solid black;
-        "> </input>
-              <button id = "addTeam1" data-inline="true" class = "createTradeBut" style = "border:none; border-right: solid black; border-bottom: solid black;">+</button>
-              <button id = "minusTeam1"  data-inline="true" class = "createTradeBut" style = "border:none; border-right: solid black;">-</button>
+          <div id = "chooseTradeForm">
+            <div id = "team1con">
+              <input placeholder = "Team 1" type = "text" id = "team1player1" class = "playerInput" style="
+              border-radius: 10px 0 0 0;
+              border: none;
+              border-right: solid black;
+              border-bottom: solid black;
+          "> </input>
+                <button id = "addTeam1" data-inline="true" class = "createTradeBut" style = "border:none; border-right: solid black; border-bottom: solid black;">+</button>
+                <button id = "minusTeam1"  data-inline="true" class = "createTradeBut" style = "border:none; border-right: solid black;">-</button>
+            </div>
+            
+            <div id = 'team2con'> 
+              <input placeholder = "Team 2" type = "text" id = "team2player1" class = "playerInput" style="
+              border-radius: 0 10px 0 0;
+              border: none;
+              border-left: solid black;
+              border-bottom: solid black;
+          "> </input>
+              <button id = "addTeam2" data-inline="true" class = "createTradeBut" style = "border:none; border-left: solid black; border-bottom: solid black;">+</button>
+              <button id = "minusTeam2"  data-inline="true" class = "createTradeBut" style = "border:none;  border-left: solid black;">-</button>
+            </div>
+            <button id = "submitTrade" style = "border-radius: 0 0 10px 10px;border: none;border-top: solid black;">Submit</button>
           </div>
-          
-          <div id = 'team2con'> 
-            <input placeholder = "Team 2" type = "text" id = "team2player1" class = "playerInput" style="
-            border-radius: 0 10px 0 0;
-            border: none;
-            border-left: solid black;
-            border-bottom: solid black;
-        "> </input>
-            <button id = "addTeam2" data-inline="true" class = "createTradeBut" style = "border:none; border-left: solid black; border-bottom: solid black;">+</button>
-            <button id = "minusTeam2"  data-inline="true" class = "createTradeBut" style = "border:none;  border-left: solid black;">-</button>
+          <div id = "tradeInsights" style = "display:none">
+            <h1 id = "insightsHeader" style = "color: white;" >Insights</h1>
           </div>
-        <button id = "submitTrade" style = "border-radius: 0 0 10px 10px;border: none;border-top: solid black;">Submit</button>
-
         </div> 
         <div id = "tradeContent">
           <div id="chart"></div>
