@@ -195,6 +195,7 @@ background-color: #3e8e41;
     height: fit-content;
     color: white;
     border-radius: 10px;
+    padding: 10px 10px 10px 10px;
 }
 table{
     border-collapse: collapse;
@@ -318,12 +319,14 @@ th, td{
     height: fit-content;
     color: white;
     border-radius: 10px;
+    padding: 10px 10px 10px 10px;
+
 }
 #tradeContent {
     display: none;
 }
 html,body {
-  font-family: Consolas, monaco, monospace;
+  /* font-family: Consolas, monaco, monospace; */
 }
 
 #chart {
@@ -497,9 +500,16 @@ input {
 #tradeInsights {
   background: #222430;
   border-radius: 10px;
-  padding: 10px 10px 10px 10px;
+  padding: 20px 20px 20px 20px;
 }
 #insightsHeader {
   text-align: center;
 }
-
+#createOwnBack {
+  border-radius: 8px;
+  border: none;
+  padding: 5px 5px 5px 5px;
+  color: #222430;
+  font-family: "Lato", "sans serif";
+  font-weight: bolder;
+}

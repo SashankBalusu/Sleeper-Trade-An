@@ -84,13 +84,13 @@ function displayRanks(pos, positionRankingsTable, finalRankings){
     row_2.setAttribute("style", "border:none;")
     let row_2_data_1 = document.createElement('td');
     row_2_data_1.textContent = key;
-    row_2_data_1.setAttribute("style", "border:none;")
+    row_2_data_1.setAttribute("style", "border:none; text-align: center;")
     let row_2_data_2 = document.createElement('td');
     row_2_data_2.textContent = counter;
-    row_2_data_2.setAttribute("style", "border:none;")
+    row_2_data_2.setAttribute("style", "border:none; text-align: center;")
     let row_2_data_3 = document.createElement('td');
-    row_2_data_3.textContent = finalRankings[pos][key];
-    row_2_data_3.setAttribute("style", "border:none;")
+    row_2_data_3.textContent = (finalRankings[pos][key]).toFixed(2);
+    row_2_data_3.setAttribute("style", "border:none; text-align: center;")
 
 
     row_2.appendChild(row_2_data_1);
@@ -110,13 +110,13 @@ function displayStats(obj){
     row_2.setAttribute("style", "border:none;")
     let row_2_data_1 = document.createElement('td');
     row_2_data_1.textContent = key;
-    row_2_data_1.setAttribute("style", "border:none;")
+    row_2_data_1.setAttribute("style", "border:none; text-align: center;")
     let row_2_data_2 = document.createElement('td');
     row_2_data_2.textContent = counter;
-    row_2_data_2.setAttribute("style", "border:none;")
+    row_2_data_2.setAttribute("style", "border:none; text-align: center;")
     let row_2_data_3 = document.createElement('td');
     row_2_data_3.textContent = obj[key];
-    row_2_data_3.setAttribute("style", "border:none;")
+    row_2_data_3.setAttribute("style", "border:none; text-align: center;")
 
 
     row_2.appendChild(row_2_data_1);
@@ -656,6 +656,7 @@ submitLeagueID.addEventListener("click", function() {
               labels: labelArr,
               datasets: [{
                   label: "Data",
+                  fontColor: "white",
                   borderColor: gradientStroke,
                   pointBorderColor: gradientStroke,
                   pointBackgroundColor: gradientStroke,
@@ -673,30 +674,33 @@ submitLeagueID.addEventListener("click", function() {
           options: {          
               legend: {
                   position: "bottom",
-                  fontColor: "white"
+                  fontColor: "white",
               },
               scales: {
                   yAxes: [{
                       ticks: {
-                          fontColor: "rgba(255,255,255, 1)",
+                          fontColor: "white",
                           fontStyle: "bold",
                           beginAtZero: true,
                           maxTicksLimit: 5,
                           padding: 20
                       },
                       gridLines: {
-                          drawTicks: false,
-                          display: false
+                          drawTicks: true,
+                          display: true, 
+                          zeroLineColor: "rgba(255, 255, 255, 0.25)",
+                          color: "rgba(255, 255, 255, 0.25)"
                       }
 
                   }],
                   xAxes: [{
                       gridLines: {
-                          zeroLineColor: "transparent"
+                          zeroLineColor: "rgba(255, 255, 255, 0.25)",
+                          color: "rgba(255, 255, 255, 0.25)"
                       },
                       ticks: {
                           padding: 20,
-                          fontColor: "rgba(0,0,0, 1)",
+                          fontColor: "white",
                           fontStyle: "bold"
                       }
                   }]
@@ -704,14 +708,14 @@ submitLeagueID.addEventListener("click", function() {
               plugins: {
                 title: {
                     display: true,
-                    text: `${name}'s scores`
+                    text: `${name}'s scores`,
+                    fontColor: "white"
                 }
               }
               
           }
       });
-    dataArr = []
-    labelArr = []  
+    
     };
 
     for (let i = 0; i < elements.length; i++) {
