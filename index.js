@@ -224,7 +224,8 @@ submitLeagueID.addEventListener("click", function() {
     const sleeperIDForm = document.querySelector("#sleeperIDForm")
     sleeperIDForm.setAttribute("style", "display:none")
     //loadGif(loadTheGif)
-  
+    loadTheGif.setAttribute("style", "display: block")
+    alert(loadTheGif.setAttribute("style", "display: block"))
     //sleep(5000)
     console.log("in")
     
@@ -434,7 +435,7 @@ submitLeagueID.addEventListener("click", function() {
         //     iterate ++
         //   }
         // }
-        ranks[key] = reverseWithMiddle(5.5, index)
+        ranks[key] = index
 
 
         // var index = temp.findIndex(p => p.attr1 == usernameObj[owner]);
@@ -628,7 +629,7 @@ submitLeagueID.addEventListener("click", function() {
         // let matchupData = httpGet(`https://api.sleeper.app/v1/league/650072723749421056/matchups/${(i)}`)
         // const matchup = JSON.parse(matchupData)
         let currMatchup = weeks[i]
-
+        console.log(matchup)
         for (let j = 0; j < matchup.length; j++){
           if (currMatchup[j]["roster_id"] == rosterID){
             dataArr.push(currMatchup[j]["points"])
@@ -894,6 +895,9 @@ submitLeagueID.addEventListener("click", function() {
       createOwn.setAttribute("style", "color: #717387")
       randomStats.setAttribute("style", "color: white")
       removeAllChildNodes(document.querySelector("#sleepertbodystats"))
+      removeAllChildNodes(document.querySelector("#sleepertbodytransactions"))
+      removeAllChildNodes(document.querySelector("#sleepertbodywins"))
+
       positionRankingsContent.setAttribute("style", "display:none")
       document.querySelector("#chooseTradeContent").setAttribute("style", "display:none;")
       weightObj = {}
@@ -978,7 +982,41 @@ submitLeagueID.addEventListener("click", function() {
         Object.entries(transactionObj).sort(([,a],[,b]) => b-a)
       )
       displayStats(transactionObjSorted, document.querySelector("#transactionRanksTable"),document.querySelector("#sleepertbodytransactions") )
+      let winsByOwner = {}
+      for (let i = 0; i < rosters.length; i++){
+        winsByOwner[rosters[i]["owner_id"]] = rosters[i]["settings"]["wins"]
+      }
+      let totalWins = 0
+      let currWeekMatchupID, currWeekOpponent
+      let opponents = []
+      let winsAgainstOwner = {}
+      for (let owner in usernameObj){
+        for (let i = 1; i < weeksPassed; i++){
+          for (let j = 0; j < weeks[i].length; j++){
+            if (weeks[i][j]["roster_id"] == rosterIDObj[owner]){
+              currWeekMatchupID = weeks[i][j]["matchup_id"]
+            }
+          }
+          for (let j =0; j < weeks[i].length; j++){
+            if (weeks[i][j]["matchup_id"] == currWeekMatchupID && weeks[i][j]["roster_id"] != rosterIDObj[owner]){
+              currWeekOpponent = weeks[i][j]["roster_id"]
+              opponents.push(currWeekOpponent)
+            }
+          }
+        }
+        for (let i = 0; i < opponents.length; i++){
+          let opponentUserID = getKeyByValue(rosterIDObj, opponents[i])
 
+          totalWins += winsByOwner[opponentUserID]
+        }
+        winsAgainstOwner[usernameObj[owner]] = totalWins
+        totalWins = 0
+        opponents = []
+      }
+      let winsAgainstOwnerSorted = Object.fromEntries(
+        Object.entries(winsAgainstOwner).sort(([,a],[,b]) => b-a)
+      )
+      displayStats(winsAgainstOwnerSorted, document.querySelector("#opponentWinsRanksTable"),document.querySelector("#sleepertbodywins") )
     })
     const createOwn = document.querySelector("#createOwn")
     createOwn.addEventListener("click", function(){
