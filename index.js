@@ -680,6 +680,7 @@ submitLeagueID.addEventListener("click", function() {
       }
       let amtTransactionsByWeek = []
       let amountTrans = 0
+      let amountTrades = 0
       for (let i = 1; i < transactions.length; i++){
         let currWeekTransactions = transactions[i]
         for (let j = 0; j < currWeekTransactions.length; j++){
@@ -688,11 +689,20 @@ submitLeagueID.addEventListener("click", function() {
               amountTrans ++
             }
           }
+          else {
+            for (let z = 0; z < currWeekTransactions[j]["roster_ids"].length; z++){
+              if (currWeekTransactions[j]["roster_ids"][z] == rosterID){
+                amountTrades++
+                amountTrans++
+                break;
+              }
+            }
+          }
         }
         amtTransactionsByWeek[i-1] = amountTrans
         amountTrans = 0
-
       }
+      console.log(amountTrades)
       var gradientStroke2 = ctx.createLinearGradient(500, 0, 100, 0);
       let tempStr = hexToRgb(invert(color))
       gradientStroke2.addColorStop(0, (tempStr + " 1"));
