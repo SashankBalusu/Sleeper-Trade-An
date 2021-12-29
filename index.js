@@ -407,7 +407,7 @@ submitLeagueID.addEventListener("click", function() {
           tempObj[usernameFromObj] = ownerPosRank[key][i]
         }
         let posSorted = Object.fromEntries(
-        Object.entries(tempObj).sort(([,a],[,b]) => a-b)
+        Object.entries(tempObj).sort(([,a],[,b]) => b-a)
         )
         finalRankings[i] = posSorted
         tempObj = {}
@@ -840,51 +840,51 @@ submitLeagueID.addEventListener("click", function() {
     qbRanks.addEventListener("click", function(){
       removeAllChildNodes(document.querySelector("#sleepertbody"))
       displayRanks("QB", positionRankingsTable, finalRankings)
-      qbRanks.setAttribute("style", "background:#3e8e41")
-      wrRanks.setAttribute("style", "background:black")
-      rbRanks.setAttribute("style", "background:black")
-      teRanks.setAttribute("style", "background:black")
-      kRanks.setAttribute("style", "background:black")
+      qbRanks.setAttribute("style", "background:white; color: black;")
+      wrRanks.setAttribute("style", "background:#222430")
+      rbRanks.setAttribute("style", "background:#222430")
+      teRanks.setAttribute("style", "background:#222430")
+      kRanks.setAttribute("style", "background:#222430")
 
     })
     wrRanks.addEventListener("click", function(){
       removeAllChildNodes(document.querySelector("#sleepertbody"))
       displayRanks("WR", positionRankingsTable, finalRankings)
-      wrRanks.setAttribute("style", "background:#3e8e41")
-      qbRanks.setAttribute("style", "background:black")
-      rbRanks.setAttribute("style", "background:black")
-      teRanks.setAttribute("style", "background:black")
-      kRanks.setAttribute("style", "background:black")
+      wrRanks.setAttribute("style", "background:white; color: black;")
+      qbRanks.setAttribute("style", "background:#222430")
+      rbRanks.setAttribute("style", "background:#222430")
+      teRanks.setAttribute("style", "background:#222430")
+      kRanks.setAttribute("style", "background:#222430")
 
     })
     rbRanks.addEventListener("click", function(){
       removeAllChildNodes(document.querySelector("#sleepertbody"))
       displayRanks("RB", positionRankingsTable, finalRankings)
-      rbRanks.setAttribute("style", "background:#3e8e41")
-      wrRanks.setAttribute("style", "background:black")
-      qbRanks.setAttribute("style", "background:black")
-      teRanks.setAttribute("style", "background:black")
-      kRanks.setAttribute("style", "background:black")
+      rbRanks.setAttribute("style", "background:white; color: black;")
+      wrRanks.setAttribute("style", "background:#222430")
+      qbRanks.setAttribute("style", "background:#222430")
+      teRanks.setAttribute("style", "background:#222430")
+      kRanks.setAttribute("style", "background:#222430")
 
     })
     teRanks.addEventListener("click", function(){
       removeAllChildNodes(document.querySelector("#sleepertbody"))
       displayRanks("TE", positionRankingsTable, finalRankings)
-      teRanks.setAttribute("style", "background:#3e8e41")
-      wrRanks.setAttribute("style", "background:black")
-      rbRanks.setAttribute("style", "background:black")
-      qbRanks.setAttribute("style", "background:black")
-      kRanks.setAttribute("style", "background:black")
+      teRanks.setAttribute("style", "background:white; color: black;")
+      wrRanks.setAttribute("style", "background:#222430")
+      rbRanks.setAttribute("style", "background:#222430")
+      qbRanks.setAttribute("style", "background:#222430")
+      kRanks.setAttribute("style", "background:#222430")
 
     })
     kRanks.addEventListener("click", function(){
       removeAllChildNodes(document.querySelector("#sleepertbody"))
       displayRanks("K", positionRankingsTable, finalRankings)
-      kRanks.setAttribute("style", "background:#3e8e41")
-      wrRanks.setAttribute("style", "background:black")
-      rbRanks.setAttribute("style", "background:black")
-      teRanks.setAttribute("style", "background:black")
-      qbRanks.setAttribute("style", "background:black")
+      kRanks.setAttribute("style", "background:white; color: black;")
+      wrRanks.setAttribute("style", "background:#222430")
+      rbRanks.setAttribute("style", "background:#222430")
+      teRanks.setAttribute("style", "background:#222430")
+      qbRanks.setAttribute("style", "background:#222430")
 
     })
     randomStats.addEventListener("click", function(){
@@ -924,10 +924,10 @@ submitLeagueID.addEventListener("click", function() {
         weightObj[username] = totalweight
       }
       let weightObjSorted = Object.fromEntries(
-        Object.entries(weightObj).sort(([,a],[,b]) => a-b)
+        Object.entries(weightObj).sort(([,a],[,b]) => b-a)
       )
       let heightObjSorted = Object.fromEntries(
-        Object.entries(heightObj).sort(([,a],[,b]) => a-b)
+        Object.entries(heightObj).sort(([,a],[,b]) => b-a)
       )
       displayStats(weightObjSorted, document.querySelector("#heightWeightRanksTable"),document.querySelector("#sleepertbodystats") )
       randomStatsContent.setAttribute("style", "display:block;")
@@ -959,6 +959,14 @@ submitLeagueID.addEventListener("click", function() {
                 amountTrans ++
               }
             }
+            else {
+              for (let z = 0; z < currWeekTransactions[j]["roster_ids"].length; z++){
+                if (currWeekTransactions[j]["roster_ids"][z] == rosterID){
+                  amountTrans++
+                  break;
+                }
+              }
+            }
           }
         }
         transactionObj[usernameObj[user]] = amountTrans
@@ -967,7 +975,7 @@ submitLeagueID.addEventListener("click", function() {
         
       }
       let transactionObjSorted = Object.fromEntries(
-        Object.entries(transactionObj).sort(([,a],[,b]) => a-b)
+        Object.entries(transactionObj).sort(([,a],[,b]) => b-a)
       )
       displayStats(transactionObjSorted, document.querySelector("#transactionRanksTable"),document.querySelector("#sleepertbodytransactions") )
 
@@ -1041,7 +1049,11 @@ submitLeagueID.addEventListener("click", function() {
     })
     const submitTrade = document.querySelector("#submitTrade")
     submitTrade.addEventListener("click", function(){
+      const chooseTradeContent = document.querySelector("#chooseTradeContent")
+      chooseTradeContent.setAttribute("style", "display:grid; background:transparent;")
       const team1con = document.querySelector("#team1con")
+      document.querySelector("#tradeCreatorHeader").setAttribute("style", "display:none;")
+
       team1players = []
       for (let i = 1; i < (team1con.children.length - 1); i++){
         let select = document.querySelector("#team1player" + i)
@@ -1093,8 +1105,10 @@ submitLeagueID.addEventListener("click", function() {
       }
       console.log(team1Val + " " + team2Val)
       const tradeInsights = document.querySelector("#tradeInsights")
-      const chooseTradeForm = document.querySelector("#chooseTradeForm")
-      chooseTradeForm.setAttribute("style", "display:none;")
+      team1con.setAttribute("style", "display:none;")
+      team2con.setAttribute("style", "display:none;")
+      submitTrade.setAttribute("style", "display: none;")
+
       tradeInsights.setAttribute("style", "display: block;")
       let strongerfor = document.createElement("p")
       strongerfor.classList.add("tradeInsightP")
@@ -1178,12 +1192,17 @@ submitLeagueID.addEventListener("click", function() {
       tradeInsights.appendChild(backbutton)
       const createOwnBack = document.querySelector("#createOwnBack")
       createOwnBack.addEventListener("click", function(){
-        chooseTradeForm.setAttribute("style", "display: block;")
+        team1con.setAttribute("style", "display:grid;")
+        team2con.setAttribute("style", "display:grid;")
+        submitTrade.setAttribute("style", "display: grid;")
         tradeInsights.setAttribute("style", "display: none;")
         while (tradeInsights.children.length > 1){
           tradeInsights.removeChild(tradeInsights.children[tradeInsights.children.length -1])
 
         }
+        chooseTradeContent.setAttribute("style", "display:grid;")
+        document.querySelector("#tradeCreatorHeader").setAttribute("style", "display:grid;")
+
       })
 
 

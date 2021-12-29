@@ -152,8 +152,8 @@ body {
 }
 
 .btn-group button {
-    background-color: black; /* Green background */
-    border: 1px solid green; /* Green border */
+    background-color: #222430; /* Green background */
+    border: solid 1px black; /* Green border */
     color: white; /* White text */
     padding: 10px 24px; /* Some padding */
     cursor: pointer; /* Pointer/hand icon */
@@ -485,9 +485,20 @@ table {
 }
 #chooseTradeContent {
   display: none;
-  grid-template-areas: "team1 team2";
-  height: 150px;
+  grid-template-areas:"header header" "team1 team2";
+  background: #222430;
+  padding: 20px 50px 50px 50px;
+  border-radius: 10px;
+  height: fit-content;
+  width: 80%;
   /* grid-template-columns: 50% 50%  */
+}
+#tradeCreatorHeader {
+  display: grid;
+  grid-area: header;
+  color: white;
+  margin: auto;
+  margin-bottom: 20px;
 }
 #team1con {
   display: grid;
@@ -498,16 +509,36 @@ table {
   grid-area: team2;
 }
 .playerInput {
-  /* height: 30px; */
+  height: auto;
+  min-height: 30px;
 }
 .createTradeBut {
-  /* height: 20px;; */
+  height: auto;
+  min-height: 30px;
 }
 #submitTrade {
-  width: 200%
+  width: 200%;
+  border-radius: 0 0 10px 10px;
+  border: none;
+  height: auto;
+  min-height: 30px;
+  font-family: "Lato";
+  font-size: 16px;
+  font-weight: bolder;
+}
+#submitLeagueID {
+  font-family: "Lato";
+  font-size: 16px;
+  font-weight: bolder;
+}
+#minusTeam1{
+  border-bottom: solid 1px black;
 }
 input {
   text-align: center;
+  font-family: "Lato";
+  font-size: 16px;
+  font-weight: bolder;
 }
 .tradeInsightP {
   color: white;
