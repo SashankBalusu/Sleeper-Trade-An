@@ -224,8 +224,6 @@ submitLeagueID.addEventListener("click", function() {
     const sleeperIDForm = document.querySelector("#sleeperIDForm")
     sleeperIDForm.setAttribute("style", "display:none")
     //loadGif(loadTheGif)
-    loadTheGif.setAttribute("style", "display: block")
-    alert(loadTheGif.setAttribute("style", "display: block"))
     //sleep(5000)
     console.log("in")
     
