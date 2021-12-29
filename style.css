@@ -74,7 +74,7 @@ body {
     display: grid;
     grid-template-areas: "nav con";
     grid-template-columns: 30% 80%;
-
+    
 
 }
 
@@ -121,7 +121,8 @@ body {
     display: grid;
     grid-area: con;
     justify-content: center;
-}
+    width: 88%;
+  }
 #mainSleeper {
     display: none;
 }
@@ -349,6 +350,7 @@ html,body {
 table {
   width: 400px;
   height: 400px;
+  margin: auto;
 }
 
 .charttitle {
@@ -469,14 +471,17 @@ table {
   background: #7F8C8D;
 }
 .wrapper{
-  width: 400px;
+  width: 600px;
   display:block;
-  overflow:hidden;
+  /* overflow:hidden; */
   margin:0 auto;
   padding: 60px 50px;
   background:#222430;
   border-radius:10px;
   margin-top: 20px;
+}
+#myChart {
+  margin: auto;
 }
 #chooseTradeContent {
   display: none;

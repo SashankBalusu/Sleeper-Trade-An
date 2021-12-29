@@ -745,6 +745,7 @@ submitLeagueID.addEventListener("click", function() {
               legend: {
                   position: "bottom",
                   fontColor: "black",
+                  maintainAspectRatio: false
               },
               scales: {
                   yAxes: [{
