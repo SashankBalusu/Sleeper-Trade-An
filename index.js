@@ -99,10 +99,8 @@ function displayRanks(pos, positionRankingsTable, finalRankings){
     tbody.appendChild(row_2); 
   }
 }
-function displayStats(obj){
-  const heightWeightRanksTable = document.querySelector("#heightWeightRanksTable")
+function displayStats(obj , heightWeightRanksTable, tbody){
   heightWeightRanksTable.setAttribute("style", "display: block")
-  const tbody = document.querySelector("#sleepertbodystats")
   counter = 0
   for (let key in obj){
     counter ++
@@ -149,6 +147,23 @@ function makeRegColor(){
 }
 function getKeyByValue(object, value) {
   return Object.keys(object).find(key => object[key] === value);
+}
+function componentToHex(c) {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+function invert(rgb) {
+  rgb = [].slice.call(arguments).join(",").replace(/rgb\(|\)|rgba\(|\)|\s/gi, '').split(',');
+  for (var i = 0; i < rgb.length; i++) rgb[i] = (i === 3 ? 1 : 255) - rgb[i];
+  return rgbToHex(rgb[0], rgb[1], rgb[2]);
+}
+function hexToRgb(hex) {
+var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+return result ? `rgb(${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)},`: null;
 }
 // function onReady(callback) {
 //   var intervalId = window.setInterval(function() {
@@ -240,6 +255,14 @@ submitLeagueID.addEventListener("click", function() {
       matchup = JSON.parse(matchupData)
       weeks[i] = matchup
     }
+    let transactions = []
+    for (let i = 1; i < weeksPassed; i++){
+      const transactionData = httpGet(`https://api.sleeper.app/v1/league/650072723749421056/transactions/${(i)}`)
+      const trans = JSON.parse(transactionData)
+      transactions[i] = trans
+
+    }
+    console.log(transactions)
     numUsers = league["total_rosters"]
 
     let usernameObj = {}
@@ -258,6 +281,8 @@ submitLeagueID.addEventListener("click", function() {
 
 
     }
+    console.log(rosterIDObj)
+    console.log(usernameObj)
     for (let i = 0; i < userIDList.length; i++) {
       roster = rosters[i]["players"]
       //console.log("roster" + roster)
@@ -628,16 +653,20 @@ submitLeagueID.addEventListener("click", function() {
       }
       console.log(firstWeekPts)
       console.log(lastWeekPts)
+      let color
       if (firstWeekPts > lastWeekPts){
         if ((firstWeekPts -10) > lastWeekPts) {
           gradientStroke.addColorStop(0, 'rgba(255, 51, 51, 1)');
 
           gradientStroke.addColorStop(1, 'rgba(255, 51, 51, 0.25)');
+          color = "rgba(255, 51, 51, 1)"
         }
         else {
           gradientStroke.addColorStop(0, 'rgba(160, 160, 160, 1)');
 
           gradientStroke.addColorStop(1, 'rgba(160, 160, 160, 0.25)');
+          color = "rgba(255, 51, 51, 1)"
+
         }
         
       }
@@ -645,8 +674,31 @@ submitLeagueID.addEventListener("click", function() {
         gradientStroke.addColorStop(0, 'rgba(102, 204, 0, 1)');
 
         gradientStroke.addColorStop(1, 'rgba(102, 204, 0, 0.25)');
+        color = "rgba(102, 204, 0, 1)"
+
+        
       }
-      
+      let amtTransactionsByWeek = []
+      let amountTrans = 0
+      for (let i = 1; i < transactions.length; i++){
+        let currWeekTransactions = transactions[i]
+        for (let j = 0; j < currWeekTransactions.length; j++){
+          if (currWeekTransactions[j]["roster_ids"].length == 1){
+            if (currWeekTransactions[j]["roster_ids"][0] == rosterID) {
+              amountTrans ++
+            }
+          }
+        }
+        amtTransactionsByWeek[i-1] = amountTrans
+        amountTrans = 0
+
+      }
+      var gradientStroke2 = ctx.createLinearGradient(500, 0, 100, 0);
+      let tempStr = hexToRgb(invert(color))
+      gradientStroke2.addColorStop(0, (tempStr + " 1"));
+      gradientStroke2.addColorStop(1, (tempStr + " 0.25"));
+
+      console.log(amtTransactionsByWeek)
       if (myChart){
         myChart.destroy()
       }
@@ -655,7 +707,7 @@ submitLeagueID.addEventListener("click", function() {
           data: {
               labels: labelArr,
               datasets: [{
-                  label: "Data",
+                  label: "Score",
                   fontColor: "white",
                   borderColor: gradientStroke,
                   pointBorderColor: gradientStroke,
@@ -668,31 +720,71 @@ submitLeagueID.addEventListener("click", function() {
                   pointRadius: 3,
                   fill: false,
                   borderWidth: 4,
-                  data: dataArr
-              }]
+                  data: dataArr,
+                  yAxisID:"left"
+              },
+              {
+                label: "Transactions",
+                fontColor: "white",
+                borderColor: gradientStroke2,
+                pointBorderColor: gradientStroke2,
+                pointBackgroundColor: gradientStroke2,
+              pointHoverBackgroundColor: gradientStroke2,
+                pointHoverBorderColor: gradientStroke2,
+                pointBorderWidth: 10,
+                pointHoverRadius: 10,
+                pointHoverBorderWidth: 1,
+                pointRadius: 3,
+                fill: false,
+                borderWidth: 4,
+                data: amtTransactionsByWeek,
+                yAxisID:"right"
+            }]
           },
           options: {          
               legend: {
                   position: "bottom",
-                  fontColor: "white",
+                  fontColor: "black",
               },
               scales: {
                   yAxes: [{
-                      ticks: {
-                          fontColor: "white",
-                          fontStyle: "bold",
-                          beginAtZero: true,
-                          maxTicksLimit: 5,
-                          padding: 20
-                      },
-                      gridLines: {
-                          drawTicks: true,
-                          display: true, 
-                          zeroLineColor: "rgba(255, 255, 255, 0.25)",
-                          color: "rgba(255, 255, 255, 0.25)"
-                      }
+                    "scaleLabel": {
+                      "display": true,
+                      "labelString": "Points Scored",
+                      "fontColor": "white"
+              
+                    },
+                    "id": "left",
+                    "stacked": false,
+                    "ticks": {
+                      "beginAtZero": true,
+                       fontColor: "white"
 
-                  }],
+                    }
+                  },
+                  {
+                    "scaleLabel": {
+                      "display": true,
+                      "labelString": "Transactions",
+                      "fontColor": "white"
+
+                    },
+                    "id": "right",
+                    "position": "right",
+                    "stacked": false,
+                    "ticks": {
+                      "beginAtZero": true,
+                       fontColor: "white"
+
+                    }, 
+                    gridLines: {
+                      drawTicks: true,
+                      display: true, 
+                      zeroLineColor: "rgba(255, 255, 255, 0.25)",
+                      color: "rgba(255, 255, 255, 0.25)"
+                  }
+                  }
+                ],
                   xAxes: [{
                       gridLines: {
                           zeroLineColor: "rgba(255, 255, 255, 0.25)",
@@ -826,23 +918,48 @@ submitLeagueID.addEventListener("click", function() {
       let heightObjSorted = Object.fromEntries(
         Object.entries(heightObj).sort(([,a],[,b]) => a-b)
       )
-      displayStats(weightObjSorted)
+      displayStats(weightObjSorted, document.querySelector("#heightWeightRanksTable"),document.querySelector("#sleepertbodystats") )
       randomStatsContent.setAttribute("style", "display:block;")
       heightweightswitch.addEventListener("click", function(){
         if (heightweightswitch.checked){
           removeAllChildNodes(document.querySelector("#sleepertbodystats"))
           
-          displayStats(heightObjSorted)
+          displayStats(heightObjSorted, document.querySelector("#heightWeightRanksTable"),document.querySelector("#sleepertbodystats"))
           //console.log(heightObjSorted)
         }
         else {
           removeAllChildNodes(document.querySelector("#sleepertbodystats"))
 
-          displayStats(weightObjSorted)
+          displayStats(weightObjSorted, document.querySelector("#heightWeightRanksTable"), document.querySelector("#sleepertbodystats"))
 
           //console.log(weightObjSorted)
         }
       })
+      let amountTrans = 0
+      let transactionObj = {}
+      for (let user in rosterIDObj){
+        let rosterID = rosterIDObj[user]
+        
+        for (let i = 1; i < transactions.length; i++){
+          let currWeekTransactions = transactions[i]
+          for (let j = 0; j < currWeekTransactions.length; j++){
+            if (currWeekTransactions[j]["roster_ids"].length == 1){
+              if (currWeekTransactions[j]["roster_ids"][0] == rosterID) {
+                amountTrans ++
+              }
+            }
+          }
+        }
+        transactionObj[usernameObj[user]] = amountTrans
+        amountTrans = 0
+
+        
+      }
+      let transactionObjSorted = Object.fromEntries(
+        Object.entries(transactionObj).sort(([,a],[,b]) => a-b)
+      )
+      displayStats(transactionObjSorted, document.querySelector("#transactionRanksTable"),document.querySelector("#sleepertbodytransactions") )
+
     })
     const createOwn = document.querySelector("#createOwn")
     createOwn.addEventListener("click", function(){

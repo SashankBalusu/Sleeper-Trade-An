@@ -322,6 +322,16 @@ th, td{
     padding: 10px 10px 10px 10px;
 
 }
+#transactionRanksTable {
+  display:none;
+  margin-top: 20px;
+  background: #222430;
+  height: fit-content;
+  color: white;
+  border-radius: 10px;
+  padding: 10px 10px 10px 10px;
+
+}
 #tradeContent {
     display: none;
 }
