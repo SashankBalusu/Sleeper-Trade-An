@@ -684,7 +684,11 @@ submitLeagueID.addEventListener("click", function() {
         let currWeekTransactions = transactions[i]
         for (let j = 0; j < currWeekTransactions.length; j++){
           if (currWeekTransactions[j]["roster_ids"].length == 1){
-            if (currWeekTransactions[j]["roster_ids"][0] == rosterID) {
+            let checkIfOnlyDrop = false
+            if (currWeekTransactions[j]["adds"] != "null") {
+              checkIfOnlyDrop = true
+            }
+            if (currWeekTransactions[j]["roster_ids"][0] == rosterID && currWeekTransactions[j]["status"] == "complete" && checkIfOnlyDrop == true) {
               amountTrans ++
             }
           }
@@ -957,7 +961,11 @@ submitLeagueID.addEventListener("click", function() {
           let currWeekTransactions = transactions[i]
           for (let j = 0; j < currWeekTransactions.length; j++){
             if (currWeekTransactions[j]["roster_ids"].length == 1){
-              if (currWeekTransactions[j]["roster_ids"][0] == rosterID) {
+              let checkIfOnlyDrop = false
+              if (currWeekTransactions[j]["adds"] != null) {
+                checkIfOnlyDrop = true
+              }
+              if (currWeekTransactions[j]["roster_ids"][0] == rosterID && currWeekTransactions[j]["status"] == "complete" && checkIfOnlyDrop == true) {
                 amountTrans ++
               }
             }
