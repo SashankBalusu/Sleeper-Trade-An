@@ -224,7 +224,6 @@ submitLeagueID.addEventListener("click", function() {
     const sleeperIDForm = document.querySelector("#sleeperIDForm")
     sleeperIDForm.setAttribute("style", "display:none")
     //loadGif(loadTheGif)
-    //sleep(5000)
     console.log("in")
     
     let userData = httpGet("https://api.sleeper.app/v1/league/650072723749421056/users")
