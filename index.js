@@ -964,13 +964,12 @@ submitLeagueID.addEventListener("click", function() {
           options: {
             cutoutPercentage: 40,
             responsive: false,
-            plugins: {
-              title: {
-                  display: true,
-                  text: `week ${weekVal} data`,
-                  fontColor: "white"
-              }
+            title: {
+                display: true,
+                text: `${name}'s week ${weekVal} data`,
+                fontColor: "white"
             }
+            
       
           }
         });

@@ -577,7 +577,6 @@ input {
   -webkit-appearance: none;
   height: 300px;
   border-radius: 5px;
-  background: #ccc;
   outline: none;
   writing-mode: bt-lr; /* IE */
   -webkit-appearance: slider-vertical; /* WebKit */
@@ -589,23 +588,22 @@ input[type=range]::-webkit-slider-runnable-track {
   cursor: pointer;
   animate: 0.2s;
   box-shadow: 1px 1px 1px #000000;
-  background: #A97A9E;
+  background: rgba(255, 99, 132, 0.5);
   border-radius: 5px;
   border: 1px solid #000000;
 }
 input[type=range]::-webkit-slider-thumb {
-  box-shadow: 1px 1px 1px #000000;
   border: 1px solid #000000;
   height: 30px;
   width: 15px;
   border-radius: 5px;
-  background: #FFFFFF;
+  background: rgba(54, 162, 235, 0.2);
   cursor: pointer;
   -webkit-appearance: none;
   margin-top: -11px;
 }
-input[type=range]:focus::-webkit-slider-runnable-track {
-  background: #A97A9E;
+input[type=range]::-webkit-slider-runnable-track {
+  background: rgba(255, 99, 132, 0.5);
 }
 
 #myChart2 {
