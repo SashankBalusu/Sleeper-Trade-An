@@ -165,6 +165,7 @@ function hexToRgb(hex) {
 var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 return result ? `rgb(${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)},`: null;
 }
+
 // function onReady(callback) {
 //   var intervalId = window.setInterval(function() {
 //     if (document.getElementsByTagName('body')[0] !== undefined) {
@@ -198,7 +199,7 @@ const randomStatsContent = document.querySelector("#randomStatsContent")
 const heightweightswitch = document.querySelector("#heightweightswitch")
 
 
-let myChart
+let myChart, myChart2
 let createOwnCount = 0
 
 
@@ -826,188 +827,157 @@ submitLeagueID.addEventListener("click", function() {
               
           }
       });
-      let posPoints = {}
-      let maxScores = []
-      for (let key in numPos){
-        posPoints[key] = []
-      }
-      for (let i = 1; i < weeks.length; i++){
-        let currMatch = weeks[i]
-        for (let j = 0; j < currMatch.length; j++){
-          if (currMatch[j]["roster_id"] == rosterID){
-            let currMatchPlayers = currMatch[j]["players"]
-            console.log(currMatchPlayers.length)
-            let flexPoints = []
-            for (let z = 0; z < currMatchPlayers.length; z++){
-              let currPlayerID = currMatchPlayers[z]
-              let currPlayerPosition = player[currPlayerID]["position"]
-              //console.log(currMatch[j]["player_points"])
-              let currPlayerPoints = currMatch[j]["players_points"][currPlayerID]
-              let playerPositionPoints = posPoints[currPlayerPosition]
-              playerPositionPoints.push(currPlayerPoints)
-              posPoints[currPlayerPosition] = playerPositionPoints
-              if (currPlayerPosition == "WR" || currPlayerPosition == "RB" || currPlayerPosition == "TE"){
-                flexPoints.push(currPlayerPoints)
-                posPoints["FLEX"] = flexPoints
+      let weekInput = document.querySelector("#weekInput")
+      weekInput.max = `${weeksPassed-1}`
+      weekInput.oninput = displayChart
+      displayChart()
 
-              }
-
-
-            }
-          }
-
-        }
-        for (let key in posPoints){
-          if (key == "FLEX"){
-            //let cumpos = 0
-            let maxArr = []
-              let tempNum = numPos["WR"]
-              let wrMaxSorted = posPoints["WR"].sort((a, b) => b-a);
-              let wrMax = wrMaxSorted[tempNum]
-              maxArr.push(wrMax)
-              tempNum = numPos["RB"]
-              let rbMaxSorted = posPoints["RB"].sort((a, b) => b-a);
-              let rbMax = rbMaxSorted[tempNum]
-              maxArr.push(rbMax)
-
-              tempNum = numPos["TE"]
-              let teMaxSorted = posPoints["TE"].sort((a, b) => b-a);
-              let teMax = teMaxSorted[tempNum]
-              maxArr.push(teMax)
-
-      
-
-              // if (innerkey == "WR" ||innerkey == "RB" ||innerkey == "TE"){
-              //   cumpos+= numPos[innerkey] 
-              // }
-            
-            //let posPointsFlex = posPoints[key]
-            let sorted = maxArr.sort((a, b) => b-a)
-            let pointsToUse = sorted[0]
-            let pointsToUseArr = []
-            pointsToUseArr.push(pointsToUse)
-            posPoints[key] = pointsToUseArr
-            continue
-          }
-          
-
-        }
-        for (let key in posPoints){
-          let posPointsValue = posPoints[key]
-          let highestToLowest = posPointsValue.sort((a, b) => b-a);
-          let amount = numPos[key]
-          const slicedArray = highestToLowest.slice(0, amount);
-          posPoints[key] = slicedArray
-        }
-        let maxScore = 0
-        for (let key in posPoints){
-          let currPos = posPoints[key]
-          for (let j = 0; j < currPos.length; j++){
-            maxScore += currPos[j]
-          }
-        }
-        maxScores.push(maxScore)
-        console.log("week " + i + ": " )
-        console.log(posPoints)
-        posPoints = {}
+      function displayChart(){
+        let weekVal = weekInput.value
+        let posPoints = {}
+        let maxScores = []
         for (let key in numPos){
           posPoints[key] = []
         }
-
-      }
-      console.log(maxScores)
-      let percentageOfTotal = []
-      let totalPointsScored
-      for (let i = 1; i < maxScores.length+1; i++){
-        let currMatch = weeks[i]
-        for (let j = 0; j < currMatch.length; j++){
-          if (currMatch[j]["roster_id"] == rosterID){
-            totalPointsScored = currMatch[j]["points"]
+        for (let i = 1; i < weeks.length; i++){
+          let currMatch = weeks[i]
+          for (let j = 0; j < currMatch.length; j++){
+            if (currMatch[j]["roster_id"] == rosterID){
+              let currMatchPlayers = currMatch[j]["players"]
+              console.log(currMatchPlayers.length)
+              let flexPoints = []
+              for (let z = 0; z < currMatchPlayers.length; z++){
+                let currPlayerID = currMatchPlayers[z]
+                let currPlayerPosition = player[currPlayerID]["position"]
+                //console.log(currMatch[j]["player_points"])
+                let currPlayerPoints = currMatch[j]["players_points"][currPlayerID]
+                let playerPositionPoints = posPoints[currPlayerPosition]
+                playerPositionPoints.push(currPlayerPoints)
+                posPoints[currPlayerPosition] = playerPositionPoints
+                if (currPlayerPosition == "WR" || currPlayerPosition == "RB" || currPlayerPosition == "TE"){
+                  flexPoints.push(currPlayerPoints)
+                  posPoints["FLEX"] = flexPoints
+      
+                }
+      
+      
+              }
+            }
+      
           }
+          for (let key in posPoints){
+            if (key == "FLEX"){
+              //let cumpos = 0
+              let maxArr = []
+                let tempNum = numPos["WR"]
+                let wrMaxSorted = posPoints["WR"].sort((a, b) => b-a);
+                let wrMax = wrMaxSorted[tempNum]
+                maxArr.push(wrMax)
+                tempNum = numPos["RB"]
+                let rbMaxSorted = posPoints["RB"].sort((a, b) => b-a);
+                let rbMax = rbMaxSorted[tempNum]
+                maxArr.push(rbMax)
+      
+                tempNum = numPos["TE"]
+                let teMaxSorted = posPoints["TE"].sort((a, b) => b-a);
+                let teMax = teMaxSorted[tempNum]
+                maxArr.push(teMax)
+      
+        
+      
+                // if (innerkey == "WR" ||innerkey == "RB" ||innerkey == "TE"){
+                //   cumpos+= numPos[innerkey] 
+                // }
+              
+              //let posPointsFlex = posPoints[key]
+              let sorted = maxArr.sort((a, b) => b-a)
+              let pointsToUse = sorted[0]
+              let pointsToUseArr = []
+              pointsToUseArr.push(pointsToUse)
+              posPoints[key] = pointsToUseArr
+              continue
+            }
+            
+      
+          }
+          for (let key in posPoints){
+            let posPointsValue = posPoints[key]
+            let highestToLowest = posPointsValue.sort((a, b) => b-a);
+            let amount = numPos[key]
+            const slicedArray = highestToLowest.slice(0, amount);
+            posPoints[key] = slicedArray
+          }
+          let maxScore = 0
+          for (let key in posPoints){
+            let currPos = posPoints[key]
+            for (let j = 0; j < currPos.length; j++){
+              maxScore += currPos[j]
+            }
+          }
+          maxScores.push(maxScore)
+          
+          posPoints = {}
+          for (let key in numPos){
+            posPoints[key] = []
+          }
+      
         }
-        percentageOfTotal.push(parseFloat(((totalPointsScored/maxScores[i-1])*100).toFixed(1)))
-      }
-      var ctx = document.getElementById('myChart2').getContext("2d");
-      var gradientStroke3 = ctx.createLinearGradient(500, 0, 100, 0);
-      gradientStroke3.addColorStop(0, "rgba(230, 98, 155, 1)");
-      gradientStroke3.addColorStop(1, "rgba(230, 98, 155, 0.25)");
-      var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labelArr,
+        let maxPointsScored = []
+        let truePointsScored = []
+        let totalPointsScored
+        for (let i = 1; i < maxScores.length+1; i++){
+          let currMatch = weeks[i]
+          for (let j = 0; j < currMatch.length; j++){
+            if (currMatch[j]["roster_id"] == rosterID){
+              truePointsScored.push(currMatch[j]["points"])
+            }
+          }
+          console.log(maxScores[i])
+          maxPointsScored.push(parseFloat(maxScores[i-1].toFixed(1)))
+        }
+        var ctx = document.getElementById("myChart2");
+        if (myChart2){
+          myChart2.destroy()
+        }
+        console.log(truePointsScored)
+        console.log(maxPointsScored)
+        console.log("week" + weekVal)
+        let dataPieChart = [truePointsScored[weekVal-1], (maxPointsScored[weekVal-1]-truePointsScored[weekVal-1]).toFixed(1)]
+        myChart2 = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: ["Total", "Points Missed"],
             datasets: [{
-                label: "Percentage of Max Points Scored",
-                fontColor: "white",
-                borderColor: gradientStroke3,
-                pointBorderColor: gradientStroke3,
-                pointBackgroundColor: gradientStroke3,
-               pointHoverBackgroundColor: gradientStroke3,
-                pointHoverBorderColor: gradientStroke3,
-                pointBorderWidth: 10,
-                pointHoverRadius: 10,
-                pointHoverBorderWidth: 1,
-                pointRadius: 3,
-                fill: false,
-                borderWidth: 4,
-                data: percentageOfTotal
+              label: '# of Tomatoes',
+              data: dataPieChart,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.5)',
+                'rgba(54, 162, 235, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)'
+              ],
+              borderWidth: 1
             }]
-        },
-        options: {          
-            legend: {
-                position: "bottom",
-                fontColor: "black",
-                maintainAspectRatio: false
-            },
-            scales: {
-                yAxes: [{
-                  "scaleLabel": {
-                    "display": true,
-                    "labelString": "Percentage",
-                    "fontColor": "white"
-            
-                  },
-                    ticks: {
-                        fontColor: "white",
-                        fontStyle: "bold",
-                        beginAtZero: true,
-                        maxTicksLimit: 5,
-                        padding: 20
-                    },
-                    gridLines: {
-                      zeroLineColor: "rgba(255, 255, 255, 0.25)",
-                      color: "rgba(255, 255, 255, 0.25)"
-                  }
-    
-                }],
-                xAxes: [{
-                  "scaleLabel": {
-                    "display": true,
-                    "labelString": "Week",
-                    "fontColor": "white"
-            
-                  },
-                  gridLines: {
-                    zeroLineColor: "rgba(255, 255, 255, 0.25)",
-                    color: "rgba(255, 255, 255, 0.25)"
-                },
-                    ticks: {
-                        padding: 20,
-                        fontColor: "white",
-                        fontStyle: "bold"
-                    }
-                }]
-            },
+          },
+          options: {
+            cutoutPercentage: 40,
+            responsive: false,
             plugins: {
               title: {
                   display: true,
-                  text: `${name}'s scores`,
+                  text: `week ${weekVal} data`,
                   fontColor: "white"
               }
             }
-        }
-    });
-      console.log(percentageOfTotal)
+      
+          }
+        });
+      }
+      //console.log(percentageOfTotal)
     };
+   
 
     for (let i = 0; i < elements.length; i++) {
         elements[i].addEventListener('click', function(){
