@@ -225,7 +225,7 @@ submitLeagueID.addEventListener("click", function() {
     const sleeperIDForm = document.querySelector("#sleeperIDForm")
     sleeperIDForm.setAttribute("style", "display:none")
     //loadGif(loadTheGif)
-    console.log("in")
+    //loadGif(loadTheGif)
     let users, league, stat, player, rosters, nflState, matchupData, matchup
     let weeks = []
     let transactions = []
@@ -233,7 +233,6 @@ submitLeagueID.addEventListener("click", function() {
     let leagueID = leagueIDInput.value
     let pastLeagueID = JSON.parse(localStorage.getItem("leagueID"))
     if (pastLeagueID == leagueID){
-      console.log("using local")
       users = JSON.parse(localStorage.getItem("users"))
       league = JSON.parse(localStorage.getItem("league"))
       stat = JSON.parse(localStorage.getItem("stat"))
@@ -276,7 +275,6 @@ submitLeagueID.addEventListener("click", function() {
       localStorage.setItem("nflState", JSON.stringify(nflState))
 
       weeksPassed = nflState["leg"]
-      console.log(weeksPassed)
       localStorage.setItem("weeksPassed", JSON.stringify(weeksPassed))
 
   
@@ -305,7 +303,6 @@ submitLeagueID.addEventListener("click", function() {
 
     }
     
-    console.log(transactions)
     numUsers = league["total_rosters"]
 
     let usernameObj = {}
@@ -324,8 +321,6 @@ submitLeagueID.addEventListener("click", function() {
 
 
     }
-    console.log(rosterIDObj)
-    console.log(usernameObj)
     for (let i = 0; i < userIDList.length; i++) {
       roster = rosters[i]["players"]
       //console.log("roster" + roster)
@@ -377,7 +372,6 @@ submitLeagueID.addEventListener("click", function() {
       ownerID = rosters[i]["owner_id"]
       rosterByOwner[ownerID] = roster
     }
-    console.log(rosterByOwner)
     
     playerPositions = league["roster_positions"]
     playerPosCopy = []
@@ -485,7 +479,6 @@ submitLeagueID.addEventListener("click", function() {
       }
       numericRank[usernameObj[owner]] = ranks
       ranks = {}
-      console.log(numericRank)
     }
     let positionalNeed = {}
     for (let key in numericRank){
@@ -509,7 +502,6 @@ submitLeagueID.addEventListener("click", function() {
       positionalNeed[key] = posNeedGive
       posNeedGive = {}
     }
-    console.log(positionalNeed)
     const trades = document.querySelector("#trades")
     const stats = document.querySelector("#stats")
     let customTrade = document.createElement("a")
@@ -528,7 +520,6 @@ submitLeagueID.addEventListener("click", function() {
     }
     let margin = userIDList.length*25+265
     stats.setAttribute("style", "margin-top: " + margin + "px")
-    console.log(finalRankings)
     mainSleeper.setAttribute("style", "display: grid")
     const elements = document.getElementsByClassName("userTrades");
     let counter = 0
@@ -661,17 +652,13 @@ submitLeagueID.addEventListener("click", function() {
       }
       let dataArr = []
       let name = elements[loc].id
-      console.log(name)
       let uID = getKeyByValue(usernameObj, name)
       let rosterID = rosterIDObj[uID]
-      console.log(rosterID)
-      console.log(uID)
-      console.log(usernameObj)
+
       for (let i = 1; i < weeksPassed; i++){
         // let matchupData = httpGet(`https://api.sleeper.app/v1/league/650072723749421056/matchups/${(i)}`)
         // const matchup = JSON.parse(matchupData)
         let currMatchup = weeks[i]
-        console.log(matchup)
         for (let j = 0; j < matchup.length; j++){
           if (currMatchup[j]["roster_id"] == rosterID){
             dataArr.push(currMatchup[j]["points"])
@@ -683,8 +670,6 @@ submitLeagueID.addEventListener("click", function() {
       for (let i = 0; i < matchup.length; i++){
         let firstmatchup = weeks[1]
         let lastmatchup = weeks[weeksPassed-1]
-        console.log("last matchup" + firstmatchup)
-        console.log("i" + i + " " + firstmatchup[0])
 
         if (firstmatchup[i]["roster_id"] == rosterID){
           firstWeekPts = firstmatchup[i]["points"]
@@ -694,8 +679,6 @@ submitLeagueID.addEventListener("click", function() {
         }
 
       }
-      console.log(firstWeekPts)
-      console.log(lastWeekPts)
       let color
       if (firstWeekPts > lastWeekPts){
         if ((firstWeekPts -10) > lastWeekPts) {
@@ -749,13 +732,11 @@ submitLeagueID.addEventListener("click", function() {
         amtTransactionsByWeek[i-1] = amountTrans
         amountTrans = 0
       }
-      console.log(amountTrades)
       var gradientStroke2 = ctx.createLinearGradient(500, 0, 100, 0);
       let tempStr = hexToRgb(invert(color))
       gradientStroke2.addColorStop(0, (tempStr + " 1"));
       gradientStroke2.addColorStop(1, (tempStr + " 0.25"));
 
-      console.log(amtTransactionsByWeek)
       if (myChart){
         myChart.destroy()
       }
@@ -888,11 +869,13 @@ submitLeagueID.addEventListener("click", function() {
           for (let j = 0; j < currMatch.length; j++){
             if (currMatch[j]["roster_id"] == rosterID){
               let currMatchPlayers = currMatch[j]["players"]
-              console.log(currMatchPlayers.length)
               let flexPoints = []
               for (let z = 0; z < currMatchPlayers.length; z++){
                 let currPlayerID = currMatchPlayers[z]
                 let currPlayerPosition = player[currPlayerID]["position"]
+                if (currPlayerPosition == "FB"){
+                  currPlayerPosition = "RB"
+                }
                 //console.log(currMatch[j]["player_points"])
                 let currPlayerPoints = currMatch[j]["players_points"][currPlayerID]
                 let playerPositionPoints = posPoints[currPlayerPosition]
@@ -976,16 +959,12 @@ submitLeagueID.addEventListener("click", function() {
               truePointsScored.push(currMatch[j]["points"])
             }
           }
-          console.log(maxScores[i])
           maxPointsScored.push(parseFloat(maxScores[i-1].toFixed(1)))
         }
         var ctx = document.getElementById("myChart2");
         if (myChart2){
           myChart2.destroy()
         }
-        console.log(truePointsScored)
-        console.log(maxPointsScored)
-        console.log("week" + weekVal)
         let dataPieChart = [truePointsScored[weekVal-1], (maxPointsScored[weekVal-1]-truePointsScored[weekVal-1]).toFixed(1)]
         myChart2 = new Chart(ctx, {
           type: 'pie',
@@ -1102,7 +1081,6 @@ submitLeagueID.addEventListener("click", function() {
       document.querySelector("#chooseTradeContent").setAttribute("style", "display:none;")
       weightObj = {}
       heightObj = {}
-      console.log(rosterByOwner)
 
       for (key in rosterByOwner){
         let totalweight = 0
@@ -1259,7 +1237,6 @@ submitLeagueID.addEventListener("click", function() {
           input.id = "team1player"+(len-1)
           input.classList.add("playerInput")
           input.placeholder = "Team 1"
-          console.log(team1con.children.length)
           team1con.insertBefore(input, team1con.children[team1con.children.length -2])
         })
         minusTeam1.addEventListener("click", function(){
@@ -1285,7 +1262,6 @@ submitLeagueID.addEventListener("click", function() {
           input.id = "team2player"+(len-1)
           input.classList.add("playerInput")
           input.placeholder = "Team 2"
-          console.log(team2con.children.length)
           team2con.insertBefore(input, team2con.children[team2con.children.length -2])
         })
         minusTeam2.addEventListener("click", function(){
@@ -1350,7 +1326,6 @@ submitLeagueID.addEventListener("click", function() {
 
         }
       }
-      console.log(team1Val + " " + team2Val)
       const tradeInsights = document.querySelector("#tradeInsights")
       team1con.setAttribute("style", "display:none;")
       team2con.setAttribute("style", "display:none;")
