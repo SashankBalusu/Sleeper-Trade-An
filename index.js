@@ -540,6 +540,9 @@ submitLeagueID.addEventListener("click", function() {
       createOwn.setAttribute("style", "color: #717387")
       positionRankings.setAttribute("style", "color:#717387")
       randomStats.setAttribute("style", "color:#717387")
+      playerLookup.setAttribute("style", "color: #717387")
+      const playerLookupContent = document.querySelector("#playerLookupContent")
+      playerLookupContent.setAttribute("style", "display: none")
       //fix hardcoded names
       var chartjson = {
         "title": `${elements[loc].id}'s ranks`,
@@ -1016,6 +1019,9 @@ submitLeagueID.addEventListener("click", function() {
       document.querySelector("#tradeContent").setAttribute("style", "display:none;")
       document.querySelector("#chooseTradeContent").setAttribute("style", "display:none;")
       randomStatsContent.setAttribute("style", "display:none")
+      playerLookup.setAttribute("style", "color: #717387")
+      const playerLookupContent = document.querySelector("#playerLookupContent")
+      playerLookupContent.setAttribute("style", "display: none")
       positionRankingsContent.setAttribute("style", "display:block")
       //console.log(finalRankings)
     })
@@ -1070,6 +1076,15 @@ submitLeagueID.addEventListener("click", function() {
 
     })
     playerLookup.addEventListener("click", function(){
+      makeRegColor()
+      positionRankings.setAttribute("style", "color: #717387")
+      randomStats.setAttribute("style", "color:#717387")
+      createOwn.setAttribute("style", "color: #717387")
+      document.querySelector("#tradeContent").setAttribute("style", "display:none;")
+      document.querySelector("#chooseTradeContent").setAttribute("style", "display:none;")
+      randomStatsContent.setAttribute("style", "display:none")
+      positionRankingsContent.setAttribute("style", "display:none")
+      playerLookup.setAttribute("style", "color: white")
       const playerLookupContent = document.querySelector("#playerLookupContent")
       playerLookupContent.setAttribute("style", "display: block")
       let searchPlayer = document.querySelector("#searchPlayer")
@@ -1136,6 +1151,9 @@ submitLeagueID.addEventListener("click", function() {
       document.querySelector("#tradeContent").setAttribute("style", "display:none;")
       positionRankings.setAttribute("style", "color: #717387")
       createOwn.setAttribute("style", "color: #717387")
+      playerLookup.setAttribute("style", "color: #717387")
+      const playerLookupContent = document.querySelector("#playerLookupContent")
+      playerLookupContent.setAttribute("style", "display: none")
       randomStats.setAttribute("style", "color: white")
       removeAllChildNodes(document.querySelector("#sleepertbodystats"))
       removeAllChildNodes(document.querySelector("#sleepertbodytransactions"))
