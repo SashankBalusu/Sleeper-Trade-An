@@ -166,6 +166,7 @@ var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 return result ? `rgb(${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)},`: null;
 }
 
+
 // function onReady(callback) {
 //   var intervalId = window.setInterval(function() {
 //     if (document.getElementsByTagName('body')[0] !== undefined) {
@@ -195,6 +196,7 @@ const rbRanks = document.querySelector("#rbRanks")
 const teRanks = document.querySelector("#teRanks")
 const kRanks = document.querySelector("#kRanks")
 const randomStats = document.querySelector("#randomStats")
+const playerLookup = document.querySelector("#playerLookup")
 const randomStatsContent = document.querySelector("#randomStatsContent")
 const heightweightswitch = document.querySelector("#heightweightswitch")
 
@@ -647,7 +649,7 @@ submitLeagueID.addEventListener("click", function() {
       var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
       
       let labelArr = []
-      for (let i = 0; i < weeksPassed; i++){
+      for (let i = 0; i < weeksPassed-1; i++){
         labelArr.push("Week " + (i + 1))
       }
       let dataArr = []
@@ -1066,6 +1068,68 @@ submitLeagueID.addEventListener("click", function() {
       teRanks.setAttribute("style", "background:#222430")
       qbRanks.setAttribute("style", "background:#222430")
 
+    })
+    playerLookup.addEventListener("click", function(){
+      const playerLookupContent = document.querySelector("#playerLookupContent")
+      playerLookupContent.setAttribute("style", "display: block")
+      let searchPlayer = document.querySelector("#searchPlayer")
+      searchPlayer.oninput = updateAuto
+      function updateAuto(){
+        removeAllChildNodes(document.querySelector("#results"))
+        let len = searchPlayer.value.length
+        let count = 0
+        let resultsArr = {}
+        for (let key in player){
+          
+          if (len == 0){
+            break
+          }
+          if (player[key]["position"]!= "RB" && player[key]["position"]!= "FB"&& player[key]["position"]!= "QB"&& player[key]["position"]!= "WR"&& player[key]["position"]!= "TE"&& player[key]["postion"]!= "K"){
+            continue
+            
+          }
+          let sub = player[key]["full_name"]
+          try {
+            sub = sub.slice(0, len)
+          }
+          catch {
+            continue
+          }
+          if (searchPlayer.value.toLowerCase() == sub.toLowerCase() ){
+            let rank
+
+            if (player[key]["search_rank"] == null){
+              rank = 9999999
+            }
+            else {
+              rank = player[key]["search_rank"]
+            }
+            resultsArr[player[key]["full_name"]] = rank
+            
+
+          }
+        }
+        let resultsArrSorted = Object.fromEntries(
+          Object.entries(resultsArr).sort(([,a],[,b]) => a-b)
+          )
+        console.log(resultsArrSorted)
+        for (let key in resultsArrSorted){
+          if (count == 25){
+            break
+          }
+          let results = document.querySelector("#results")
+          let div = document.createElement("div")
+          div.classList.add("playerWrapper")
+          let p = document.createElement("p")
+          p.textContent= key
+          p.classList.add("players")
+          div.appendChild(p)
+          results.appendChild(div) 
+          count ++
+
+        }
+        console.log("hi")
+      }
     })
     randomStats.addEventListener("click", function(){
       makeRegColor()

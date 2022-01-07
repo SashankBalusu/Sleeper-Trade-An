@@ -609,3 +609,28 @@ input[type=range]::-webkit-slider-runnable-track {
 #myChart2 {
   display: inline-block !important;
 }
+.playerWrapper {
+  border-radius: 8px;
+  background: #222430;
+  height: 30px;
+  font-size: 20px;
+  padding-left: 10px;
+  margin-top: 10px;
+}
+#playerLookupContent {
+  display: none;
+  width: 100%;
+}
+#searchPlayer {
+  width: 700px;
+  border-radius: 8px;
+  border: none;
+  text-align: left;
+  padding-left: 10px;
+  height: 50px;
+  font-size: 30px;
+}
+.players {
+  color: white;
+  margin-top: 1px;
+}
