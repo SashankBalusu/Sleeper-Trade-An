@@ -634,3 +634,24 @@ input[type=range]::-webkit-slider-runnable-track {
   color: white;
   margin-top: 1px;
 }
+#singlePlayerInfo {
+  display: none;
+  color: white;
+  background: #222430;
+  width: 50vw;
+  padding-top: 10px;
+  border-radius: 8px;
+  text-align: center;
+  min-height: 25%;
+  height: fit-content;
+  margin-top: -100%;
+}
+#exitStats {
+  display: block;
+  float:left;
+  margin-left: 10px;
+}
+#exitStatsWrapper {
+  width: 50vw;
+  height: 10px;
+}

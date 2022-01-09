@@ -1,19 +1,162 @@
+function createPlayerGraph(playerScoresArr, playerProjectionsArr, weeksPassed){
+  console.log(document.querySelector("#myChart3"))
+  var ctx = document.getElementById("myChart3").getContext("2d");
+
+  var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+  firstWeekPts = playerScoresArr[1]
+  lastWeekPts = playerScoresArr[playerScoresArr.length]
+
+  let color
+  if (firstWeekPts > lastWeekPts){
+    if ((firstWeekPts -10) > lastWeekPts) {
+      gradientStroke.addColorStop(0, 'rgba(255, 51, 51, 1)');
+
+      gradientStroke.addColorStop(1, 'rgba(255, 51, 51, 0.25)');
+      color = "rgba(255, 51, 51, 1)"
+    }
+    else {
+      gradientStroke.addColorStop(0, 'rgba(160, 160, 160, 1)');
+
+      gradientStroke.addColorStop(1, 'rgba(160, 160, 160, 0.25)');
+      color = "rgba(255, 51, 51, 1)"
+
+    }
+    
+  }
+  else {
+    gradientStroke.addColorStop(0, 'rgba(102, 204, 0, 1)');
+
+    gradientStroke.addColorStop(1, 'rgba(102, 204, 0, 0.25)');
+    color = "rgba(102, 204, 0, 1)"
+
+    
+  }
+  let labelArr = []
+  for (let i = 0; i < weeksPassed-1; i++){
+    labelArr.push("Week " + (i + 1))
+  }
+  var gradientStroke2 = ctx.createLinearGradient(500, 0, 100, 0);
+  let tempStr = hexToRgb(invert(color))
+  gradientStroke2.addColorStop(0, (tempStr + " 1"));
+  gradientStroke2.addColorStop(1, (tempStr + " 0.25"));
+
+  if (myChart){
+    myChart.destroy()
+  }
+  myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: labelArr,
+          datasets: [{
+              label: "Actual Points Scored",
+              fontColor: "white",
+              borderColor: gradientStroke,
+              pointBorderColor: gradientStroke,
+              pointBackgroundColor: gradientStroke,
+            pointHoverBackgroundColor: gradientStroke,
+              pointHoverBorderColor: gradientStroke,
+              pointBorderWidth: 10,
+              pointHoverRadius: 10,
+              pointHoverBorderWidth: 1,
+              pointRadius: 3,
+              fill: false,
+              borderWidth: 4,
+              data: playerScoresArr,
+              spanGaps: true
+          },
+          {
+            label: "Points Projected",
+            fontColor: "white",
+            borderColor: gradientStroke2,
+            pointBorderColor: gradientStroke2,
+            pointBackgroundColor: gradientStroke2,
+          pointHoverBackgroundColor: gradientStroke2,
+            pointHoverBorderColor: gradientStroke2,
+            pointBorderWidth: 10,
+            pointHoverRadius: 10,
+            pointHoverBorderWidth: 1,
+            pointRadius: 3,
+            fill: false,
+            borderWidth: 4,
+            data: playerProjectionsArr,
+            spanGaps: true
+        }]
+      },
+      options: {          
+          legend: {
+              position: "bottom",
+              fontColor: "black",
+              maintainAspectRatio: false
+          },
+          scales: {
+              yAxes: [{
+                "scaleLabel": {
+                  "display": true,
+                  "labelString": "Points",
+                  "fontColor": "white"
+          
+                }
+              },
+              { 
+                gridLines: {
+                  drawTicks: true,
+                  display: true, 
+                  zeroLineColor: "rgba(255, 255, 255, 0.25)",
+                  color: "rgba(255, 255, 255, 0.25)"
+              }
+              }
+            ],
+              xAxes: [{
+                "scaleLabel": {
+                  "display": true,
+                  "labelString": "Week",
+                  "fontColor": "white"
+          
+                },
+                  gridLines: {
+                      zeroLineColor: "rgba(255, 255, 255, 0.25)",
+                      color: "rgba(255, 255, 255, 0.25)"
+                  },
+                  ticks: {
+                      padding: 20,
+                      fontColor: "white",
+                      fontStyle: "bold"
+                  }
+              }]
+          },
+          plugins: {
+            title: {
+                display: true,
+                text: `Player's scores`,
+                fontColor: "white"
+            }
+          }
+          
+      }
+  });
+}
 function httpGet(theUrl) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", theUrl, false); // false for synchronous request
     xmlHttp.send(null);
     return xmlHttp.responseText;
 }
-  Array.prototype.count = function (value) {
-    let count = 0;
-  
-    this.forEach(item => {
-      if (item === value) {
-        count++;
-    }
-    });
-  
-    return count;
+function httpGetAsync(theUrl){
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.open("GET", theUrl, true); // true for asynchronous request
+  xmlHttp.send(null);
+  return xmlHttp.responseText;
+}
+Array.prototype.count = function (value) {
+  let count = 0;
+
+  this.forEach(item => {
+    if (item === value) {
+      count++;
+  }
+  });
+
+  return count;
 }
 function getLowest(playerScores, numRanks) {
     count = 0
@@ -124,9 +267,16 @@ function displayStats(obj , heightWeightRanksTable, tbody){
   }
 }
 function removeAllChildNodes(parent) {
-  while (parent.firstChild) {
+  try {
+    while (parent.firstChild) {
       parent.removeChild(parent.firstChild);
+    }
   }
+  catch {
+    return
+  }
+
+  
 }
 function heightToInches(height){
   const arr = height.split("'")
@@ -166,7 +316,13 @@ var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 return result ? `rgb(${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)},`: null;
 }
 
-
+function removeAllChildNodesExceptOne(parent, dontRem){
+  while (parent.firstChild.id != dontRem) {
+    parent.removeChild(parent.firstChild);
+    console.log("deleted")
+}
+console.log("finished deleting")
+}
 // function onReady(callback) {
 //   var intervalId = window.setInterval(function() {
 //     if (document.getElementsByTagName('body')[0] !== undefined) {
@@ -203,7 +359,8 @@ const heightweightswitch = document.querySelector("#heightweightswitch")
 
 let myChart, myChart2
 let createOwnCount = 0
-
+let statsArr = []
+let projectionsArr = []
 
 sleeperLeague.addEventListener("click", function(){
   console.log("hi")
@@ -213,7 +370,17 @@ sleeperLeague.addEventListener("click", function(){
     //animateItemIn(leagueIDInput, submitLeagueID)
     setTimeout(() => {leagueIDInput.setAttribute("style", "display:block"), 
     submitLeagueID.setAttribute("style", "display:block")}, 700);
-
+    for (let i = 1; i < 19; i++){
+      fetch(`https://api.sleeper.app/v1/stats/nfl/regular/2021/${(i)}`)
+      .then(response => response.json())
+      .then(data => statsArr[i] = data);
+      fetch(`https://api.sleeper.app/v1/projections/nfl/regular/2021/${(i)}`)
+      .then(response => response.json())
+      .then(data => projectionsArr[i] = data);
+      // const projectionsData = httpGetAsync(`https://api.sleeper.app/v1/projections/nfl/regular/2021/${(i)}`)
+      // const projections = JSON.parse(projectionsData)
+      //projectionsArr[i] = projections
+    }
     
   } 
   //sleeperLeague.classList.add("addmoveout")
@@ -231,6 +398,7 @@ submitLeagueID.addEventListener("click", function() {
     let users, league, stat, player, rosters, nflState, matchupData, matchup
     let weeks = []
     let transactions = []
+    
     let weeksPassed
     let leagueID = leagueIDInput.value
     let pastLeagueID = JSON.parse(localStorage.getItem("leagueID"))
@@ -249,18 +417,18 @@ submitLeagueID.addEventListener("click", function() {
       weeks = JSON.parse(localStorage.getItem("weeks"))
       transactions = JSON.parse(localStorage.getItem("transactions"))
       weeksPassed = JSON.parse(localStorage.getItem("weeksPassed"))
+      // statsArr = JSON.parse(localStorage.getItem("statsArr"))
+      // projectionsArr = JSON.parse(localStorage.getItem("projectionsArr"))
+      
+  
     }
     else {
-      localStorage.setItem("leagueID", JSON.stringify(leagueID))
       let userData = httpGet("https://api.sleeper.app/v1/league/650072723749421056/users")
       users = JSON.parse(userData)
-      localStorage.setItem("users", JSON.stringify(users))
       let leagueData = httpGet("https://api.sleeper.app/v1/league/650072723749421056")
       league = JSON.parse(leagueData)
-      localStorage.setItem("league", JSON.stringify(league))
       let statData = httpGet("https://api.sleeper.app/v1/stats/nfl/regular/2021")
       stat = JSON.parse(statData)
-      localStorage.setItem("stat", JSON.stringify(stat))
 
       let playerData = httpGet("https://FlatPleasingCamel.sashankbalusu.repl.co")
       playerData = playerData.substring(78)
@@ -270,16 +438,12 @@ submitLeagueID.addEventListener("click", function() {
       let rosterData = httpGet(`https://api.sleeper.app/v1/league/${leagueID}/rosters`)
       
       rosters = JSON.parse(rosterData)
-      localStorage.setItem("rosters", JSON.stringify(rosters))
 
       let nflStateData = httpGet("https://api.sleeper.app/v1/state/nfl")
       nflState = JSON.parse(nflStateData)
-      localStorage.setItem("nflState", JSON.stringify(nflState))
 
       weeksPassed = nflState["leg"]
-      localStorage.setItem("weeksPassed", JSON.stringify(weeksPassed))
-
-  
+      
       // let weeks = []
       // let matchupData
       // let matchup
@@ -287,21 +451,35 @@ submitLeagueID.addEventListener("click", function() {
         matchupData = httpGet(`https://api.sleeper.app/v1/league/650072723749421056/matchups/${(i)}`)
         matchup = JSON.parse(matchupData)
         weeks[i] = matchup
-        localStorage.setItem("matchupData", JSON.stringify(matchupData))
-        localStorage.setItem("matchup", JSON.stringify(matchup))
-
-
-      }
-      localStorage.setItem("weeks", JSON.stringify(weeks))
-
-      // let transactions = []
-      for (let i = 1; i < weeksPassed; i++){
+        
+        
         const transactionData = httpGet(`https://api.sleeper.app/v1/league/650072723749421056/transactions/${(i)}`)
         const trans = JSON.parse(transactionData)
         transactions[i] = trans
-  
+        
+        
       }
-      localStorage.setItem("transactions", JSON.stringify(transactions))
+      try {
+        localStorage.setItem("leagueID", JSON.stringify(leagueID))
+        localStorage.setItem("users", JSON.stringify(users))
+        localStorage.setItem("league", JSON.stringify(league))
+        localStorage.setItem("stat", JSON.stringify(stat))
+        localStorage.setItem("rosters", JSON.stringify(rosters))
+        localStorage.setItem("nflState", JSON.stringify(nflState))
+        localStorage.setItem("weeksPassed", JSON.stringify(weeksPassed))
+        localStorage.setItem("matchupData", JSON.stringify(matchupData))
+        localStorage.setItem("matchup", JSON.stringify(matchup))
+        localStorage.setItem("weeks", JSON.stringify(weeks))
+        localStorage.setItem("transactions", JSON.stringify(transactions))
+      }
+      catch {
+        localStorage.removeItem("leagueID")
+      }
+      
+
+      // localStorage.setItem("statsArr", JSON.stringify(statsArr))
+
+      // localStorage.setItem("projectionsArr", JSON.stringify(projectionsArr))
 
     }
     
@@ -1087,6 +1265,12 @@ submitLeagueID.addEventListener("click", function() {
       playerLookup.setAttribute("style", "color: white")
       const playerLookupContent = document.querySelector("#playerLookupContent")
       playerLookupContent.setAttribute("style", "display: block")
+      const results = document.querySelector("#results")
+      results.setAttribute("style", "display: block")
+      const lookup = document.querySelector("#lookup")
+      lookup.setAttribute("style", "display: block")
+      const singlePlayerInfo = document.querySelector("#singlePlayerInfo")
+      singlePlayerInfo.setAttribute("style", "display: none")
       let searchPlayer = document.querySelector("#searchPlayer")
       searchPlayer.oninput = updateAuto
       function updateAuto(){
@@ -1094,6 +1278,7 @@ submitLeagueID.addEventListener("click", function() {
         let len = searchPlayer.value.length
         let count = 0
         let resultsArr = {}
+        let playerIDObj = {}
         for (let key in player){
           
           if (len == 0){
@@ -1120,6 +1305,7 @@ submitLeagueID.addEventListener("click", function() {
               rank = player[key]["search_rank"]
             }
             resultsArr[player[key]["full_name"]] = rank
+            playerIDObj[player[key]["full_name"]] = key
             
 
           }
@@ -1138,13 +1324,91 @@ submitLeagueID.addEventListener("click", function() {
           let p = document.createElement("p")
           p.textContent= key
           p.classList.add("players")
+          p.id = playerIDObj[key]
           div.appendChild(p)
           results.appendChild(div) 
           count ++
 
         }
+        let allPlayersResult = document.querySelectorAll(".players")
+        allPlayersResult.forEach(singlePlayer => singlePlayer.addEventListener("click", function(){
+          console.log("hi")
+          const singlePlayerInfo = document.querySelector("#singlePlayerInfo")
+          const truePlayerInfo = document.querySelector("#truePlayerInfo")
+          const myChart3Wrapper = document.querySelector("#myChart3Wrapper")
+          removeAllChildNodesExceptOne(truePlayerInfo, "myChart3Wrapper")
+          singlePlayerInfo.setAttribute("style", "display: block")
+          let playerName = document.createElement("h1")
+          playerName.textContent = singlePlayer.textContent
+          truePlayerInfo.insertBefore(playerName, myChart3Wrapper)
+          const results = document.querySelector("#results")
+          results.setAttribute("style", "display: none")
+          const lookup = document.querySelector("#lookup")
+          lookup.setAttribute("style", "display: none")
+          let playerID = singlePlayer.id
+          let height = document.createElement("p")
+          height.textContent = `Height: ${player[playerID]["height"]}`
+          truePlayerInfo.insertBefore(height, myChart3Wrapper)
+          let weight = document.createElement("p")
+          weight.textContent = `Weight: ${player[playerID]["weight"]}`
+          truePlayerInfo.insertBefore(weight, myChart3Wrapper)
+          let playerScoresArr = []
+
+          for (let i = 1; i < weeksPassed; i++){
+            let finished1 = false
+            let currWeekStats = statsArr[i]
+            for (let innerkey in currWeekStats){
+              if (innerkey == playerID){
+                playerScoresArr.push(currWeekStats[innerkey]["pts_ppr"])
+                finished1 = true
+                break
+              }
+            }
+            if (finished1 == false) {
+              playerScoresArr.push(0.0)
+            }
+
+          }
+          let playerProjectionsArr = []
+          for (let i = 1; i < weeksPassed; i++){
+            let currWeekProjections = projectionsArr[i]
+            let finished = false
+            for (let innerkey in currWeekProjections){
+              if (innerkey == playerID){
+                if (currWeekProjections[innerkey]["pts_ppr"] == undefined){
+                  playerProjectionsArr.push(0.0)
+                }
+                else {
+                  playerProjectionsArr.push(currWeekProjections[innerkey]["pts_ppr"])
+
+                }
+                finished = true
+                break
+              }
+            }
+            if (finished == false){
+              playerProjectionsArr.push(0.0)
+            }
+            
+          }
+          createPlayerGraph(playerScoresArr, playerProjectionsArr, weeksPassed)
+
+          console.log(playerProjectionsArr)
+          console.log(playerScoresArr)
+
+        }))
         console.log("hi")
       }
+      const exitStats = document.querySelector("#exitStats")
+      exitStats.addEventListener("click", function(){
+        const singlePlayerInfo = document.querySelector("#singlePlayerInfo")
+        singlePlayerInfo.setAttribute("style", "display: none")
+        const lookup = document.querySelector("#lookup")
+        lookup.setAttribute("style", "display: block")
+        const results = document.querySelector("#results")
+        results.setAttribute("style", "display: block")
+        
+      })
     })
     randomStats.addEventListener("click", function(){
       makeRegColor()
