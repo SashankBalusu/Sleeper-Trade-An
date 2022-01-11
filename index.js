@@ -39,7 +39,10 @@ function createPlayerGraph(playerScoresArr, playerProjectionsArr, weeksPassed){
   let tempStr = hexToRgb(invert(color))
   gradientStroke2.addColorStop(0, (tempStr + " 1"));
   gradientStroke2.addColorStop(1, (tempStr + " 0.25"));
-
+  
+  var gradientStroke3 = ctx.createLinearGradient(500, 0, 100, 0);
+  gradientStroke3.addColorStop(0, (tempStr + " 0.7"));
+  gradientStroke3.addColorStop(1, (tempStr + " 0.25"));
   if (myChart){
     myChart.destroy()
   }
@@ -62,7 +65,11 @@ function createPlayerGraph(playerScoresArr, playerProjectionsArr, weeksPassed){
               fill: false,
               borderWidth: 4,
               data: playerScoresArr,
-              spanGaps: true
+              spanGaps: true,
+              lineTension: 0.1,
+              backgroundColor: gradientStroke,
+              
+              
           },
           {
             label: "Points Projected",
@@ -76,10 +83,13 @@ function createPlayerGraph(playerScoresArr, playerProjectionsArr, weeksPassed){
             pointHoverRadius: 10,
             pointHoverBorderWidth: 1,
             pointRadius: 3,
-            fill: false,
+            fill: true,
             borderWidth: 4,
             data: playerProjectionsArr,
-            spanGaps: true
+            spanGaps: true,
+            lineTension: 0.1,
+            backgroundColor: gradientStroke3
+            
         }]
       },
       options: {          

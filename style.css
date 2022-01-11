@@ -655,3 +655,7 @@ input[type=range]::-webkit-slider-runnable-track {
   width: 50vw;
   height: 10px;
 }
+#myChart3Wrapper {
+  max-width: 75%;
+  height: 200px;
+}
