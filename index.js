@@ -58,11 +58,15 @@ function createPlayerGraph(playerScoresArr, playerProjectionsArr, weeksPassed){
               pointBackgroundColor: gradientStroke,
             pointHoverBackgroundColor: gradientStroke,
               pointHoverBorderColor: gradientStroke,
-              pointBorderWidth: 10,
-              pointHoverRadius: 10,
-              pointHoverBorderWidth: 1,
-              pointRadius: 3,
-              fill: false,
+              pointBorderWidth: 2,
+              pointHoverRadius: 5,
+              pointHoverBorderWidth: 0.2,
+              pointRadius: 0.5,
+              fill: {
+                target: '+1',
+                above: 'rgba(102, 204, 0, 0.25)',   // Area will be red above the origin
+                below: 'rgba(255, 51, 51, 0.25)'    // And blue below the origin
+              },
               borderWidth: 4,
               data: playerScoresArr,
               spanGaps: true,
@@ -79,11 +83,11 @@ function createPlayerGraph(playerScoresArr, playerProjectionsArr, weeksPassed){
             pointBackgroundColor: gradientStroke2,
           pointHoverBackgroundColor: gradientStroke2,
             pointHoverBorderColor: gradientStroke2,
-            pointBorderWidth: 10,
-            pointHoverRadius: 10,
-            pointHoverBorderWidth: 1,
-            pointRadius: 3,
-            fill: true,
+            pointBorderWidth: 2,
+            pointHoverRadius: 5,
+            pointHoverBorderWidth: 0.2,
+            pointRadius: 0.5,
+            fill: false,
             borderWidth: 4,
             data: playerProjectionsArr,
             spanGaps: true,
@@ -96,43 +100,51 @@ function createPlayerGraph(playerScoresArr, playerProjectionsArr, weeksPassed){
           legend: {
               position: "bottom",
               fontColor: "black",
-              maintainAspectRatio: false
+              maintainAspectRatio: true
+          },
+          elements: {
+            point: {
+              // radius: 0,
+              hitRadius: 5
+            }
           },
           scales: {
-              yAxes: [{
+              y: {
                 "scaleLabel": {
                   "display": true,
                   "labelString": "Points",
                   "fontColor": "white"
           
-                }
-              },
-              { 
+                },
                 gridLines: {
                   drawTicks: true,
                   display: true, 
                   zeroLineColor: "rgba(255, 255, 255, 0.25)",
                   color: "rgba(255, 255, 255, 0.25)"
-              }
-              }
-            ],
-              xAxes: [{
+                },
+                ticks: {
+                    padding: 20,
+                    fontColor: "white",
+                    fontStyle: "bold"
+                }
+              },
+              x: {
                 "scaleLabel": {
                   "display": true,
                   "labelString": "Week",
                   "fontColor": "white"
           
                 },
-                  gridLines: {
-                      zeroLineColor: "rgba(255, 255, 255, 0.25)",
-                      color: "rgba(255, 255, 255, 0.25)"
-                  },
-                  ticks: {
-                      padding: 20,
-                      fontColor: "white",
-                      fontStyle: "bold"
-                  }
-              }]
+                gridLines: {
+                    zeroLineColor: "rgba(255, 255, 255, 0.25)",
+                    color: "rgba(255, 255, 255, 0.25)"
+                },
+                ticks: {
+                    padding: 20,
+                    fontColor: "white",
+                    fontStyle: "bold"
+                }
+              }
           },
           plugins: {
             title: {
@@ -716,6 +728,7 @@ submitLeagueID.addEventListener("click", function() {
 
     //add trades later on
     let myFunction = function(elements, loc) {
+      
       if (elements[loc].id == "createOwn"){
         return
       }
@@ -723,6 +736,8 @@ submitLeagueID.addEventListener("click", function() {
       randomStatsContent.setAttribute("style", "display:none")
       document.querySelector("#tradeContent").setAttribute("style", "display: block")
       document.querySelector("#chooseTradeContent").setAttribute("style", "display:none;")
+      document.querySelector("#singlePlayerInfo").setAttribute("style", "display:none;")
+
       makeRegColor()
       elements[loc].setAttribute("style", "color: white")
       createOwn.setAttribute("style", "color: #717387")
@@ -979,7 +994,7 @@ submitLeagueID.addEventListener("click", function() {
                   maintainAspectRatio: false
               },
               scales: {
-                  yAxes: [{
+                  y: {
                     "scaleLabel": {
                       "display": true,
                       "labelString": "Points Scored",
@@ -992,9 +1007,7 @@ submitLeagueID.addEventListener("click", function() {
                       "beginAtZero": true,
                        fontColor: "white"
 
-                    }
-                  },
-                  {
+                    },
                     "scaleLabel": {
                       "display": true,
                       "labelString": "Transactions",
@@ -1014,26 +1027,25 @@ submitLeagueID.addEventListener("click", function() {
                       display: true, 
                       zeroLineColor: "rgba(255, 255, 255, 0.25)",
                       color: "rgba(255, 255, 255, 0.25)"
-                  }
-                  }
-                ],
-                  xAxes: [{
+                    }
+                  },
+                  x: {
                     "scaleLabel": {
                       "display": true,
                       "labelString": "Week",
                       "fontColor": "white"
               
                     },
-                      gridLines: {
-                          zeroLineColor: "rgba(255, 255, 255, 0.25)",
-                          color: "rgba(255, 255, 255, 0.25)"
-                      },
-                      ticks: {
-                          padding: 20,
-                          fontColor: "white",
-                          fontStyle: "bold"
-                      }
-                  }]
+                    gridLines: {
+                        zeroLineColor: "rgba(255, 255, 255, 0.25)",
+                        color: "rgba(255, 255, 255, 0.25)"
+                    },
+                    ticks: {
+                        padding: 20,
+                        fontColor: "white",
+                        fontStyle: "bold"
+                    }
+                  }
               },
               plugins: {
                 title: {
@@ -1180,10 +1192,13 @@ submitLeagueID.addEventListener("click", function() {
           options: {
             cutoutPercentage: 40,
             responsive: false,
-            title: {
-                display: true,
-                text: `${name}'s week ${weekVal} data`,
-                fontColor: "white"
+            plugins: {
+              
+              title: {
+                  display: true,
+                  text: `${name}'s week ${weekVal} data`,
+                  fontColor: "white"
+              }
             }
             
       
@@ -1206,6 +1221,8 @@ submitLeagueID.addEventListener("click", function() {
       createOwn.setAttribute("style", "color: #717387")
       document.querySelector("#tradeContent").setAttribute("style", "display:none;")
       document.querySelector("#chooseTradeContent").setAttribute("style", "display:none;")
+      document.querySelector("#singlePlayerInfo").setAttribute("style", "display:none;")
+
       randomStatsContent.setAttribute("style", "display:none")
       playerLookup.setAttribute("style", "color: #717387")
       const playerLookupContent = document.querySelector("#playerLookupContent")
@@ -1422,6 +1439,7 @@ submitLeagueID.addEventListener("click", function() {
     })
     randomStats.addEventListener("click", function(){
       makeRegColor()
+      document.querySelector("#singlePlayerInfo").setAttribute("style", "display:none;")
       document.querySelector("#tradeContent").setAttribute("style", "display:none;")
       positionRankings.setAttribute("style", "color: #717387")
       createOwn.setAttribute("style", "color: #717387")
