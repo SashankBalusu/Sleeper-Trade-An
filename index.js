@@ -461,23 +461,23 @@ async function submitLeagueIDAsync() {
   }
   else {
     let userData = await httpGetAsync("https://api.sleeper.app/v1/league/650072723749421056/users")
-    users = JSON.parse(userData)
+    users = userData
     let leagueData = await httpGetAsync("https://api.sleeper.app/v1/league/650072723749421056")
-    league = JSON.parse(leagueData)
+    league = leagueData
     let statData = await httpGetAsync("https://api.sleeper.app/v1/stats/nfl/regular/2021")
-    stat = JSON.parse(statData)
+    stat = statData
 
-    let playerData = await httpGetAsync("https://FlatPleasingCamel.sashankbalusu.repl.co")
-    playerData = playerData.substring(78)
-    playerData = playerData.substring(0, playerData.length - 26)
-    player = JSON.parse(playerData)
+    let playerData = await httpGetAsync("https://FlatPleasingCamel.sashankbalusu.repl.co/players")
+    // playerData = playerData.substring(78)
+    // playerData = playerData.substring(0, playerData.length - 26)
+    player = playerData
 
     let rosterData = await httpGetAsync(`https://api.sleeper.app/v1/league/${leagueID}/rosters`)
 
-    rosters = JSON.parse(rosterData)
+    rosters = rosterData
 
     let nflStateData = await httpGetAsync("https://api.sleeper.app/v1/state/nfl")
-    nflState = JSON.parse(nflStateData)
+    nflState = nflStateData
 
     weeksPassed = nflState["leg"]
 
@@ -486,12 +486,12 @@ async function submitLeagueIDAsync() {
     // let matchup
     for (let i = 1; i < weeksPassed; i++) {
       matchupData = await httpGetAsync(`https://api.sleeper.app/v1/league/650072723749421056/matchups/${(i)}`)
-      matchup = JSON.parse(matchupData)
+      matchup = matchupData
       weeks[i] = matchup
 
 
       const transactionData = await httpGetAsync(`https://api.sleeper.app/v1/league/650072723749421056/transactions/${(i)}`)
-      const trans = JSON.parse(transactionData)
+      const trans = transactionData
       transactions[i] = trans
 
 
