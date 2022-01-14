@@ -1391,7 +1391,7 @@ async function submitLeagueIDAsync() {
         lookup.setAttribute("style", "display: none")
         let playerID = singlePlayer.id
         let height = document.createElement("p")
-        height.textContent = `Height: ${player[playerID]["height"]}`
+        height.textContent = `Height: ${player[playerID]["height"]} inches`
         truePlayerInfo.insertBefore(height, myChart3Wrapper)
         let weight = document.createElement("p")
         weight.textContent = `Weight: ${player[playerID]["weight"]}`
@@ -1435,10 +1435,33 @@ async function submitLeagueIDAsync() {
           }
 
         }
+        let totPoints = 0
+        for (let b = 0; b < playerScoresArr.length; b++){
+          if (playerScoresArr[b] == undefined){
+            continue
+          }
+          console.log(playerScoresArr)
+          console.log(totPoints)
+          totPoints+= playerScoresArr[b]
+        }
+        let totPointsProj = 0
+        for (let b = 0; b < playerProjectionsArr.length; b++){
+          if (playerProjectionsArr[b] == undefined){
+            continue
+          }
+          totPointsProj+= playerProjectionsArr[b]
+        }
+        console.log("total Points" + totPoints + "total proj " + totPointsProj)
+        let percentOfProjectedScored = (totPoints/totPointsProj) * 100
+        if (percentOfProjectedScored > 100) {
+          percentOfProjectedScored = 100
+        }
+        percentOfProjectedScored = reverseWithMiddle(50, percentOfProjectedScored)
+        let overratedRating = document.createElement("p")
+        overratedRating.textContent = `Overrated rating: ${percentOfProjectedScored.toFixed(1)}%`
+        truePlayerInfo.insertBefore(overratedRating, myChart3Wrapper)
         createPlayerGraph(playerScoresArr, playerProjectionsArr, weeksPassed)
-
-        console.log(playerProjectionsArr)
-        console.log(playerScoresArr)
+        
 
       }))
       console.log("hi")
@@ -1485,7 +1508,7 @@ async function submitLeagueIDAsync() {
         let playerWeight = parseInt(roster[ownerRoster]['weight'])
         let playerHeight = roster[ownerRoster]['height']
         if (playerHeight) {
-          let playerHeightInches = heightToInches(playerHeight)
+          let playerHeightInches = playerHeight
 
           totalHeight += playerHeightInches
           countPlayersHeight++
