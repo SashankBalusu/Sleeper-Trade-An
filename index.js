@@ -37,12 +37,15 @@ function createPlayerGraph(playerScoresArr, playerProjectionsArr, weeksPassed) {
   }
   var gradientStroke2 = ctx.createLinearGradient(500, 0, 100, 0);
   let tempStr = hexToRgb(invert(color))
-  gradientStroke2.addColorStop(0, (tempStr + " 1"));
-  gradientStroke2.addColorStop(1, (tempStr + " 0.25"));
+  console.log(tempStr)
+  let fixFormat = `rgba(${tempStr["r"]},${tempStr["g"]},${tempStr["b"]},`
+  console.log(fixFormat)
+  gradientStroke2.addColorStop(0, (fixFormat + " 1)"));
+  gradientStroke2.addColorStop(1, (fixFormat + " 0.25"));
 
   var gradientStroke3 = ctx.createLinearGradient(500, 0, 100, 0);
-  gradientStroke3.addColorStop(0, (tempStr + " 0.7"));
-  gradientStroke3.addColorStop(1, (tempStr + " 0.25"));
+  gradientStroke3.addColorStop(0, (fixFormat + " 0.7"));
+  gradientStroke3.addColorStop(1, (fixFormat + " 0.25"));
   if (myChart) {
     myChart.destroy()
   }
@@ -384,6 +387,7 @@ const randomStats = document.querySelector("#randomStats")
 const playerLookup = document.querySelector("#playerLookup")
 const randomStatsContent = document.querySelector("#randomStatsContent")
 const heightweightswitch = document.querySelector("#heightweightswitch")
+const particles_js = document.querySelector("#particles-js")
 
 
 let myChart, myChart2
@@ -394,6 +398,7 @@ let projectionsArr = []
 sleeperLeague.addEventListener("click", function () {
   console.log("hi")
   let cont = animateItemOut(sleeperLeague)
+  
   if (cont == true) {
     setTimeout(() => { sleeperLeague.setAttribute("style", "display:none") }, 600);
     //animateItemIn(leagueIDInput, submitLeagueID)
@@ -422,6 +427,8 @@ userIDList = []
 rosterByOwner = {}
 
 submitLeagueID.addEventListener("click", function () {
+  particles_js.setAttribute("style", "display:none;")
+
   submitLeagueIDAsync()
 })
 
@@ -958,8 +965,10 @@ async function submitLeagueIDAsync() {
     }
     var gradientStroke2 = ctx.createLinearGradient(500, 0, 100, 0);
     let tempStr = hexToRgb(invert(color))
-    gradientStroke2.addColorStop(0, (tempStr + " 1"));
-    gradientStroke2.addColorStop(1, (tempStr + " 0.25"));
+    let fixFormat = `rgba(${tempStr["r"]},${tempStr["g"]},${tempStr["b"]},`
+
+    gradientStroke2.addColorStop(0, (fixFormat + " 1"));
+    gradientStroke2.addColorStop(1, (fixFormat + " 0.25"));
 
     if (myChart) {
       myChart.destroy()
@@ -1188,7 +1197,7 @@ async function submitLeagueIDAsync() {
       }
       let dataPieChart = [truePointsScored[weekVal - 1], (maxPointsScored[weekVal - 1] - truePointsScored[weekVal - 1]).toFixed(1)]
       myChart2 = new Chart(ctx, {
-        type: 'pie',
+        type: 'doughnut',
         data: {
           labels: ["Total", "Points Missed"],
           datasets: [{
@@ -1391,7 +1400,8 @@ async function submitLeagueIDAsync() {
         lookup.setAttribute("style", "display: none")
         let playerID = singlePlayer.id
         let height = document.createElement("p")
-        height.textContent = `Height: ${player[playerID]["height"]} inches`
+        let playerHeightConv = `${Math.floor(player[playerID]["height"]/12)} feet ${player[playerID]["height"]%12} inches`
+        height.textContent = `Height: ${playerHeightConv}`
         truePlayerInfo.insertBefore(height, myChart3Wrapper)
         let weight = document.createElement("p")
         weight.textContent = `Weight: ${player[playerID]["weight"]}`
@@ -1455,6 +1465,10 @@ async function submitLeagueIDAsync() {
         let percentOfProjectedScored = (totPoints/totPointsProj) * 100
         if (percentOfProjectedScored > 100) {
           percentOfProjectedScored = 100
+        }
+        if (totPointsProj == 0) {
+          percentOfProjectedScored = 100
+
         }
         percentOfProjectedScored = reverseWithMiddle(50, percentOfProjectedScored)
         let overratedRating = document.createElement("p")
