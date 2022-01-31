@@ -1,5 +1,6 @@
 # Sleeper-Trade-An
 This project is made for sleeper fantasy football leagues to view more information/statistics on your league as well as calculate possible trades
+Use the league id "650072723749421056" if you want to test it out
 
 Features
 Positional Rank: 
@@ -28,7 +29,18 @@ Points Scored:
  - Uses algorithm (takes into account td dependence, points scored, etc) to determine the fairness of the trade and displays it to user
  - Checks if the trade fulfills positional needs for teams
  
+ Player Lookup:
+ - This feature allows you to search up any current (and some past) fantasy player (Qb, Wr, Rb, Te)
+ - Provides color coded area graph that shows a players points scored and points projected for any given week. If points scored is greater than points projected, the area is green, otherwise the area is red
+ - Shows information on the player such as height weight and calculated rating to show how over/underrated they are
  Random Stats: 
  - This feature allows you to view many random/misc stats in a table format
  - Shows you the heaviest/tallest team, team with most waiver transactions, and the strength of schedule for every team.
+
+Future features:
+Auto calculate trades:
+- View potential trades for your team depending on positional needs and algorithm that calculates player value
+League at a glance:
+- Improved UI to show league overall stats on startup
+
  
