@@ -3,6 +3,7 @@ This project is made for sleeper fantasy football leagues to view more informati
 Use the league id "650072723749421056" if you want to test it out
 
 Features
+
 Positional Rank: 
 - This feature allows you to see how you rank against your teammates in each position. For example, you can see what rank you are in the "rb" position
 
@@ -37,7 +38,8 @@ Points Scored:
  - This feature allows you to view many random/misc stats in a table format
  - Shows you the heaviest/tallest team, team with most waiver transactions, and the strength of schedule for every team.
 
-Future features:
+Future features
+
 Auto calculate trades:
 - View potential trades for your team depending on positional needs and algorithm that calculates player value
 League at a glance:
