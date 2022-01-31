@@ -34,6 +34,7 @@ Points Scored:
  - This feature allows you to search up any current (and some past) fantasy player (Qb, Wr, Rb, Te)
  - Provides color coded area graph that shows a players points scored and points projected for any given week. If points scored is greater than points projected, the area is green, otherwise the area is red
  - Shows information on the player such as height weight and calculated rating to show how over/underrated they are
+ 
  Random Stats: 
  - This feature allows you to view many random/misc stats in a table format
  - Shows you the heaviest/tallest team, team with most waiver transactions, and the strength of schedule for every team.
