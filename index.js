@@ -100,15 +100,16 @@ function createPlayerGraph(playerScoresArr, playerProjectionsArr, weeksPassed) {
       }]
     },
     options: {
+      responsive: true,
       legend: {
         position: "bottom",
         fontColor: "black",
-        maintainAspectRatio: true
+        maintainAspectRatio: false
       },
       elements: {
         point: {
           // radius: 0,
-          hitRadius: 5
+          hitRadius: 10
         }
       },
       scales: {
@@ -467,9 +468,9 @@ async function submitLeagueIDAsync() {
 
   }
   else {
-    let userData = await httpGetAsync("https://api.sleeper.app/v1/league/650072723749421056/users")
+    let userData = await httpGetAsync(`https://api.sleeper.app/v1/league/${leagueID}/users`)
     users = userData
-    let leagueData = await httpGetAsync("https://api.sleeper.app/v1/league/650072723749421056")
+    let leagueData = await httpGetAsync(`https://api.sleeper.app/v1/league/${leagueID}`)
     league = leagueData
     let statData = await httpGetAsync("https://api.sleeper.app/v1/stats/nfl/regular/2021")
     stat = statData
@@ -487,17 +488,20 @@ async function submitLeagueIDAsync() {
     nflState = nflStateData
 
     weeksPassed = nflState["leg"]
+    if (weeksPassed == 0){
+      weeksPassed = 18
+    }
 
     // let weeks = []
     // let matchupData
     // let matchup
     for (let i = 1; i < weeksPassed; i++) {
-      matchupData = await httpGetAsync(`https://api.sleeper.app/v1/league/650072723749421056/matchups/${(i)}`)
+      matchupData = await httpGetAsync(`https://api.sleeper.app/v1/league/${leagueID}/matchups/${(i)}`)
       matchup = matchupData
       weeks[i] = matchup
 
 
-      const transactionData = await httpGetAsync(`https://api.sleeper.app/v1/league/650072723749421056/transactions/${(i)}`)
+      const transactionData = await httpGetAsync(`https://api.sleeper.app/v1/league/${leagueID}/transactions/${(i)}`)
       const trans = transactionData
       transactions[i] = trans
 
@@ -1642,7 +1646,8 @@ async function submitLeagueIDAsync() {
     randomStats.setAttribute("style", "color:#717387")
     positionRankingsContent.setAttribute("style", "display:none")
     randomStatsContent.setAttribute("style", "display:none")
-
+    const playerLookupContent = document.querySelector("#playerLookupContent")
+    playerLookupContent.setAttribute("style", "display: none")
     document.querySelector("#tradeContent").setAttribute("style", "display: none")
     const chooseTradeContent = document.querySelector("#chooseTradeContent")
     const addTeam1 = document.getElementById("addTeam1")

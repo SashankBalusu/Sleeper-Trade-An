@@ -5,18 +5,38 @@ body {
     background-size: cover; 
     font-family: 'Lato', sans-serif;
     /* background: linear-gradient(135deg, hsla(261, 11%, 40%, 1) 0%, hsla(240, 15%, 19%, 1) 100%); */
+    overflow-x: hidden;
+
+}
+* {
+  margin: 0;
+  padding: 0;
 
 }
 #background {
-    display:block;
-    width: 100vw;
-    height: 100vh;
-    /* background-image: url("chargerssitebackground.jpg"); 
-    filter: grayscale(100%);*/
-    background-repeat: no-repeat;
+  
+    /* display:block;
+    width: 100%;
+    height: 100vh; */
+    display: grid;
+    height: 100%;
+    /* background-image: url("background.jpg");  */
+    /* -webkit-mask-image: url(maskBlue.svg); */
+    
+    /* filter: grayscale(100%); */
+    /* background-repeat: no-repeat;
     background-attachment: fixed;
-    background-size: cover;
+    background-size: cover; */
+    /* -webkit-mask-repeat: no-repeat; */
 
+
+}
+.center-fit {
+  min-width: 100vw;
+  min-height: 50vh;
+  max-width: 100%;
+  max-height: 100vh;
+  margin: auto;
 }
 #heading {
     color: #0cbd93;
@@ -85,13 +105,39 @@ body {
 }
 
 #sideNav {
+    
     background: #222430;
     display: grid;
     grid-area: nav;
-    width: 100%;
-    height: 100vw;
+    width: 30%;
+    height: 93%;
     border-radius: 10px;
+    margin-top: 20px;
+    position: fixed;
+    overflow-y: scroll;
+    margin-left: 1%;
 }
+
+
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d6dee1;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
+}
+
 #trades {
     height: 10px;
     position: absolute;
@@ -109,9 +155,10 @@ body {
     background: black;
     border-radius: 8px;
     padding-left: 10px;
-    width: 80%;
+    width: 200px;
     height: 25px;
     line-height: 25px;
+    margin-top: 10px;
 }
 #statsHeader {
     color: white;
@@ -119,22 +166,24 @@ body {
     background: black;
     border-radius: 8px;
     padding-left: 10px;
-    width: 80%;
+    width: 200px;
     height: 25px;
     line-height: 25px;
+    margin-top: 40px;
 }
 #content {
     display: grid;
     grid-area: con;
     justify-content: center;
     width: 88%;
+    margin-top: 20px;
   }
 #mainSleeper {
     display: none;
 }
 .userTrades {
     display: inline-block;
-    width: 80%;
+    width: 200px;
     margin-top: 20px;
     margin-left: 40px;
     border-radius: 8px; 
@@ -147,7 +196,7 @@ body {
 }
 .statSub {
     display: inline-block;
-    width: 80%;
+    width: 200px;
     color: #717387;
     margin-top: 20px;
     margin-left: 40px;
@@ -628,7 +677,7 @@ input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
 }
 #searchPlayer {
-  width: 700px;
+  width: 500px;
   border-radius: 8px;
   border: none;
   text-align: left;
@@ -650,7 +699,7 @@ input[type=range]::-webkit-slider-runnable-track {
   text-align: center;
   min-height: 25%;
   height: fit-content;
-  margin-top: -100%;
+  /* margin-top: -100%; */
 }
 #exitStats {
   display: block;
@@ -662,7 +711,7 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 #exitStatsWrapper {
   width: 50vw;
-  height: 10px;
+  height: 30px;
 }
 #myChart3Wrapper {
   max-width: 75%;
