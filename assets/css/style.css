@@ -1,5 +1,5 @@
 body {
-    background-image: url("gradient.png"); 
+    background-image: url("../images/gradient.png"); 
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover; 
@@ -400,9 +400,6 @@ th, td{
 }
 #tradeContent {
     display: none;
-}
-html,body {
-  /* font-family: Consolas, monaco, monospace; */
 }
 
 #chart {
