@@ -397,6 +397,8 @@ let statsArr = []
 let projectionsArr = []
 
 sleeperLeague.addEventListener("click", function () {
+  document.body.style.backgroundImage = "url(assets/images/gradient.png)";
+
   console.log("hi")
   let cont = animateItemOut(sleeperLeague)
   
