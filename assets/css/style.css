@@ -56,6 +56,14 @@ body {
   margin: -50% auto;
   z-index: 1;
 }
+#platformHeader {
+  display: block;
+  color: white;
+  margin: -50% auto;
+  font-family: 'Barlow Condensed', sans-serif; 
+  font-size: 50px;
+  font-weight: 500;
+}
 #sleeperLeague {
     display: block;
     position: relative;
@@ -69,10 +77,57 @@ body {
     background-size: 40px 40px;
     background-position: 10px 4px;
     background-repeat: no-repeat;
-    margin: -50% auto;
+    margin: 0 auto;
+    margin-top: 55%;
     z-index: 1;
+    font-family: 'Barlow Condensed', sans-serif; 
+    font-weight: 500;
+    font-size: 20px;
     
-}​
+}
+#espnLeague {
+  display: block;
+  position: relative;
+  padding: 8px 8px 8px 32px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  width: 200px;
+  height: 50px;
+  background: #ec1c24 url(https://a.espncdn.com/espnAppLP/us_en/images/1-appicon.png);
+  background-size: 40px 40px;
+  background-position: 10px 4px;
+  background-repeat: no-repeat;
+  margin: 0 auto;
+  margin-top: 5%;
+  z-index: 1;
+  font-family: 'Barlow Condensed', sans-serif; 
+  font-weight: 500;
+  font-size: 20px;
+  
+}
+#yahooLeague {
+  display: block;
+  position: relative;
+  padding: 8px 8px 8px 32px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  width: 200px;
+  height: 50px;
+  background: #6001d2 url(https://s.yimg.com/cv/apiv2/myc/fantasy/Fantasy_icon_0919250x252.png);
+  background-size: 40px 40px;
+  background-position: 10px 4px;
+  background-repeat: no-repeat;
+  margin: 0 auto;
+  margin-top: 5%;
+  z-index: 1;
+  font-family: 'Barlow Condensed', sans-serif; 
+  font-weight: 500;
+  font-size: 20px;
+}
+
+
 
 #leagueIDInput, #submitLeagueID {
     display: none;

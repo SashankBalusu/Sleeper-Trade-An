@@ -207,8 +207,16 @@ function getHighest(playerScores, numRanks) {
   }
   return count
 }
-function animateItemOut(sleeperLeague) {
-  sleeperLeague.animate([
+function animateItemOut( header) {
+  // sleeperLeague.animate([
+  //   // keyframes
+  //   { transform: 'translateX(0px)' },
+  //   { transform: 'translateX(-1000px)' }
+  // ], {
+  //   // timing options
+  //   duration: 1100
+  // })
+  header.animate([
     // keyframes
     { transform: 'translateX(0px)' },
     { transform: 'translateX(-1000px)' }
@@ -371,6 +379,9 @@ function removeAllChildNodesExceptOne(parent, dontRem) {
 
 
 const sleeperLeague = document.querySelector("#sleeperLeague")
+const espnLeague = document.querySelector("#espnLeague")
+const yahooLeague = document.querySelector("#yahooLeague")
+
 const leagueIDInput = document.querySelector("#leagueIDInput")
 const submitLeagueID = document.querySelector("#submitLeagueID")
 const loadTheGif = document.querySelector("#loadGif")
@@ -396,14 +407,21 @@ let createOwnCount = 0
 let statsArr = []
 let projectionsArr = []
 
+espnLeague.addEventListener("click", function(){
+  alert("in da works")
+})
+yahooLeague.addEventListener("click", function(){
+  alert("in da works")
+})
 sleeperLeague.addEventListener("click", function () {
   document.body.style.backgroundImage = "url(assets/images/gradient.png)";
 
   console.log("hi")
-  let cont = animateItemOut(sleeperLeague)
-  
+  let cont = animateItemOut(document.getElementById("chooseLeague"))
+  //document.getElementById("platformHeader").setAttribute("style", "display:none")
+
   if (cont == true) {
-    setTimeout(() => { sleeperLeague.setAttribute("style", "display:none") }, 600);
+    setTimeout(() => { document.getElementById("chooseLeague").setAttribute("style", "display:none") }, 600);
     //animateItemIn(leagueIDInput, submitLeagueID)
     setTimeout(() => {
       leagueIDInput.setAttribute("style", "display:block"),

@@ -9,14 +9,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500&display=swap" rel="stylesheet">
+
   </head>
   <body>
     <div id="particles-js">
       <canvas class="particles-js-canvas-el" style="width: 100%; height: 100%;" width="902" height="451">
       </canvas>
     </div>
-    <div> 
+    <div id = "chooseLeague"> 
+      <center><h1 id = "platformHeader">Choose your Platform:</h1></center>
       <button id = "sleeperLeague">Sleeper</button>
+      <button id = "espnLeague">ESPN</button>
+      <button id = "yahooLeague">Yahoo</button>
+
+
     </div>
     <div id = "sleeperIDForm">
       <center><input id = "leagueIDInput" type = text placeholder = "Enter league ID"></input>
@@ -195,7 +203,7 @@
           </div>
 
         </div>
-      </div>
+    </div>
     </div>
     
     <script src="assets/js/index.js"></script>
