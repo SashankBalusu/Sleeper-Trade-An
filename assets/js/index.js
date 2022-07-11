@@ -161,12 +161,12 @@ function createPlayerGraph(playerScoresArr, playerProjectionsArr, weeksPassed) {
     }
   });
 }
-// function httpGet(theUrl) {
-//   var xmlHttp = new XMLHttpRequest();
-//   xmlHttp.open("GET", theUrl, false); // false for synchronous request
-//   xmlHttp.send(null);
-//   return xmlHttp.responseText;
-// }
+function httpGet(theUrl) {
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.open("GET", theUrl, false); // false for synchronous request
+  xmlHttp.send(null);
+  return xmlHttp.responseText;
+}
 
 
 async function httpGetAsync(add) {
@@ -376,6 +376,111 @@ function removeAllChildNodesExceptOne(parent, dontRem) {
 // function setVisible(selector, visible) {
 //   document.querySelector(selector).style.display = visible ? 'block' : 'none';
 // }
+function pointsMissed(numPos, weeks, rosterID, player){
+  let posPoints = {}
+  let maxScores = []
+  for (let key in numPos) {
+    posPoints[key] = []
+  }
+  for (let i = 1; i < weeks.length; i++) {
+    let currMatch = weeks[i]
+    for (let j = 0; j < currMatch.length; j++) {
+      if (currMatch[j]["roster_id"] == rosterID) {
+        let currMatchPlayers = currMatch[j]["players"]
+        let flexPoints = []
+        for (let z = 0; z < currMatchPlayers.length; z++) {
+          let currPlayerID = currMatchPlayers[z]
+          let currPlayerPosition = player[currPlayerID]["position"]
+          if (currPlayerPosition == "FB") {
+            currPlayerPosition = "RB"
+          }
+          //console.log(currMatch[j]["player_points"])
+          let currPlayerPoints = currMatch[j]["players_points"][currPlayerID]
+          let playerPositionPoints = posPoints[currPlayerPosition]
+          playerPositionPoints.push(currPlayerPoints)
+          posPoints[currPlayerPosition] = playerPositionPoints
+          if (currPlayerPosition == "WR" || currPlayerPosition == "RB" || currPlayerPosition == "TE") {
+            flexPoints.push(currPlayerPoints)
+            posPoints["FLEX"] = flexPoints
+
+          }
+
+
+        }
+      }
+
+    }
+    for (let key in posPoints) {
+      if (key == "FLEX") {
+        //let cumpos = 0
+        let maxArr = []
+        let tempNum = numPos["WR"]
+        let wrMaxSorted = posPoints["WR"].sort((a, b) => b - a);
+        let wrMax = wrMaxSorted[tempNum]
+        maxArr.push(wrMax)
+        tempNum = numPos["RB"]
+        let rbMaxSorted = posPoints["RB"].sort((a, b) => b - a);
+        let rbMax = rbMaxSorted[tempNum]
+        maxArr.push(rbMax)
+
+        tempNum = numPos["TE"]
+        let teMaxSorted = posPoints["TE"].sort((a, b) => b - a);
+        let teMax = teMaxSorted[tempNum]
+        maxArr.push(teMax)
+
+
+
+        // if (innerkey == "WR" ||innerkey == "RB" ||innerkey == "TE"){
+        //   cumpos+= numPos[innerkey] 
+        // }
+
+        //let posPointsFlex = posPoints[key]
+        let sorted = maxArr.sort((a, b) => b - a)
+        let pointsToUse = sorted[0]
+        let pointsToUseArr = []
+        pointsToUseArr.push(pointsToUse)
+        posPoints[key] = pointsToUseArr
+        continue
+      }
+
+
+    }
+    for (let key in posPoints) {
+      let posPointsValue = posPoints[key]
+      let highestToLowest = posPointsValue.sort((a, b) => b - a);
+      let amount = numPos[key]
+      const slicedArray = highestToLowest.slice(0, amount);
+      posPoints[key] = slicedArray
+    }
+    let maxScore = 0
+    for (let key in posPoints) {
+      let currPos = posPoints[key]
+      for (let j = 0; j < currPos.length; j++) {
+        maxScore += currPos[j]
+      }
+    }
+    maxScores.push(maxScore)
+
+    posPoints = {}
+    for (let key in numPos) {
+      posPoints[key] = []
+    }
+
+  }
+  let maxPointsScored = []
+  let truePointsScored = []
+  let totalPointsScored
+  for (let i = 1; i < maxScores.length + 1; i++) {
+    let currMatch = weeks[i]
+    for (let j = 0; j < currMatch.length; j++) {
+      if (currMatch[j]["roster_id"] == rosterID) {
+        truePointsScored.push(currMatch[j]["points"])
+      }
+    }
+    maxPointsScored.push(parseFloat(maxScores[i - 1].toFixed(1)))
+  }
+  return [truePointsScored, maxPointsScored]
+}
 
 
 const sleeperLeague = document.querySelector("#sleeperLeague")
@@ -505,6 +610,7 @@ async function submitLeagueIDAsync() {
     rosters = rosterData
 
     let nflStateData = await httpGetAsync("https://api.sleeper.app/v1/state/nfl")
+    
     nflState = nflStateData
 
     weeksPassed = nflState["leg"]
@@ -1110,111 +1216,46 @@ async function submitLeagueIDAsync() {
     weekInput.max = `${weeksPassed - 1}`
     weekInput.oninput = displayChart
     displayChart()
+    let managerRatings = document.getElementById("managerRatings")
+    removeAllChildNodes(managerRatings)
 
+    let ratings = pointsMissed(numPos, weeks, rosterID, player)
+    let truePS = ratings[0]
+    let maxPS = ratings[1] 
+    console.log(truePS)
+    console.log(maxPS)
+    let sum = truePS.reduce((partialSum, a) => partialSum + a, 0); 
+    let sum2 = maxPS.reduce((partialSum, a) => partialSum + a, 0);
+
+    let p = document.createElement("p")
+    p.style.color = "white"
+    p.style.marginTop = "25px"
+    p.textContent = "Percent of Points Scored: " + (sum/sum2*100).toFixed(2) + "%"
+    managerRatings.appendChild(p)
+    
+    let p2 = document.createElement("p")
+    p2.style.marginTop = "25px"
+    p2.style.color = "white"
+    p2.textContent = "Total Points Scored: " + sum.toFixed(2)
+    managerRatings.appendChild(p2)
+    
+    let p3 = document.createElement("p")
+    p3.style.marginTop = "25px"
+    p3.style.color = "white"
+    p3.textContent = "Potential Points: " + sum2.toFixed(2)
+    managerRatings.appendChild(p3)
+    
+    let p4 = document.createElement("p")
+    p4.style.marginTop = "25px"
+    p4.style.color = "white"
+    p4.textContent = "Points Left on the Table: " + (sum2-sum).toFixed(2)
+    managerRatings.appendChild(p4)
     function displayChart() {
       let weekVal = weekInput.value
-      let posPoints = {}
-      let maxScores = []
-      for (let key in numPos) {
-        posPoints[key] = []
-      }
-      for (let i = 1; i < weeks.length; i++) {
-        let currMatch = weeks[i]
-        for (let j = 0; j < currMatch.length; j++) {
-          if (currMatch[j]["roster_id"] == rosterID) {
-            let currMatchPlayers = currMatch[j]["players"]
-            let flexPoints = []
-            for (let z = 0; z < currMatchPlayers.length; z++) {
-              let currPlayerID = currMatchPlayers[z]
-              let currPlayerPosition = player[currPlayerID]["position"]
-              if (currPlayerPosition == "FB") {
-                currPlayerPosition = "RB"
-              }
-              //console.log(currMatch[j]["player_points"])
-              let currPlayerPoints = currMatch[j]["players_points"][currPlayerID]
-              let playerPositionPoints = posPoints[currPlayerPosition]
-              playerPositionPoints.push(currPlayerPoints)
-              posPoints[currPlayerPosition] = playerPositionPoints
-              if (currPlayerPosition == "WR" || currPlayerPosition == "RB" || currPlayerPosition == "TE") {
-                flexPoints.push(currPlayerPoints)
-                posPoints["FLEX"] = flexPoints
-
-              }
-
-
-            }
-          }
-
-        }
-        for (let key in posPoints) {
-          if (key == "FLEX") {
-            //let cumpos = 0
-            let maxArr = []
-            let tempNum = numPos["WR"]
-            let wrMaxSorted = posPoints["WR"].sort((a, b) => b - a);
-            let wrMax = wrMaxSorted[tempNum]
-            maxArr.push(wrMax)
-            tempNum = numPos["RB"]
-            let rbMaxSorted = posPoints["RB"].sort((a, b) => b - a);
-            let rbMax = rbMaxSorted[tempNum]
-            maxArr.push(rbMax)
-
-            tempNum = numPos["TE"]
-            let teMaxSorted = posPoints["TE"].sort((a, b) => b - a);
-            let teMax = teMaxSorted[tempNum]
-            maxArr.push(teMax)
-
-
-
-            // if (innerkey == "WR" ||innerkey == "RB" ||innerkey == "TE"){
-            //   cumpos+= numPos[innerkey] 
-            // }
-
-            //let posPointsFlex = posPoints[key]
-            let sorted = maxArr.sort((a, b) => b - a)
-            let pointsToUse = sorted[0]
-            let pointsToUseArr = []
-            pointsToUseArr.push(pointsToUse)
-            posPoints[key] = pointsToUseArr
-            continue
-          }
-
-
-        }
-        for (let key in posPoints) {
-          let posPointsValue = posPoints[key]
-          let highestToLowest = posPointsValue.sort((a, b) => b - a);
-          let amount = numPos[key]
-          const slicedArray = highestToLowest.slice(0, amount);
-          posPoints[key] = slicedArray
-        }
-        let maxScore = 0
-        for (let key in posPoints) {
-          let currPos = posPoints[key]
-          for (let j = 0; j < currPos.length; j++) {
-            maxScore += currPos[j]
-          }
-        }
-        maxScores.push(maxScore)
-
-        posPoints = {}
-        for (let key in numPos) {
-          posPoints[key] = []
-        }
-
-      }
-      let maxPointsScored = []
-      let truePointsScored = []
-      let totalPointsScored
-      for (let i = 1; i < maxScores.length + 1; i++) {
-        let currMatch = weeks[i]
-        for (let j = 0; j < currMatch.length; j++) {
-          if (currMatch[j]["roster_id"] == rosterID) {
-            truePointsScored.push(currMatch[j]["points"])
-          }
-        }
-        maxPointsScored.push(parseFloat(maxScores[i - 1].toFixed(1)))
-      }
+      let arrTemp = pointsMissed(numPos, weeks, rosterID, player)
+      let truePointsScored = arrTemp[0]
+      let maxPointsScored = arrTemp[1]
+      
       var ctx = document.getElementById("myChart2");
       if (myChart2) {
         myChart2.destroy()
