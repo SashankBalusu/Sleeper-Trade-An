@@ -614,6 +614,7 @@ async function submitLeagueIDAsync() {
     nflState = nflStateData
 
     weeksPassed = nflState["leg"]
+    weeksPassed = 18
     if (weeksPassed == 0){
       weeksPassed = 18
     }
