@@ -176,7 +176,7 @@ async function httpGetAsync(add) {
     parsed = await response.json()
     return parsed
   } catch (error) {
-    console.log("rip bozo", error)
+    console.log("rip bozo", error, add)
   }
 }
 
@@ -575,7 +575,7 @@ async function submitLeagueIDAsync() {
     users = JSON.parse(localStorage.getItem("users"))
     league = JSON.parse(localStorage.getItem("league"))
     stat = JSON.parse(localStorage.getItem("stat"))
-    let playerData = await httpGetAsync("https://FlatPleasingCamel.sashankbalusu.repl.co/players")
+    let playerData = await httpGetAsync("https://api.sleeper.app/v1/players/nfl")
     console.log(playerData)
     // playerData = playerData.substring(78)
     // playerData = playerData.substring(0, playerData.length - 26)
@@ -597,10 +597,10 @@ async function submitLeagueIDAsync() {
     users = userData
     let leagueData = await httpGetAsync(`https://api.sleeper.app/v1/league/${leagueID}`)
     league = leagueData
-    let statData = await httpGetAsync("https://api.sleeper.app/v1/stats/nfl/regular/2021")
+    let statData = await httpGetAsync("https://api.sleeper.app/v1/stats/nfl/regular/2022")
     stat = statData
-
-    let playerData = await httpGetAsync("https://FlatPleasingCamel.sashankbalusu.repl.co/players")
+    
+    let playerData = await httpGetAsync("https://api.sleeper.app/v1/players/nfl")//https://FlatPleasingCamel.sashankbalusu.repl.co/players
     // playerData = playerData.substring(78)
     // playerData = playerData.substring(0, playerData.length - 26)
     player = playerData
@@ -614,7 +614,7 @@ async function submitLeagueIDAsync() {
     nflState = nflStateData
 
     weeksPassed = nflState["leg"]
-    weeksPassed = 18
+    //weeksPassed = 18
     if (weeksPassed == 0){
       weeksPassed = 18
     }
@@ -678,9 +678,12 @@ async function submitLeagueIDAsync() {
   }
   for (let i = 0; i < userIDList.length; i++) {
     roster = rosters[i]["players"]
+    console.log(roster)
     //console.log("roster" + roster)
     for (let z = roster.length; z--;) {
       let pos = roster[z]
+      console.log(pos)
+      console.log(player[pos])
       let pos2 = player[pos]["position"]
       if (pos2 == "DEF") {
         roster.splice(z, 1)
@@ -699,6 +702,7 @@ async function submitLeagueIDAsync() {
       roster[j]["player_rank"] = playerRank
       playerheight = player[playerID]["height"].substring(0, player[playerID]['height'].length - 1)
       roster[j]["height"] = playerheight
+      console.log(roster[j]["height"])
       roster[j]["weight"] = player[playerID]["weight"]
       let ptsppr = stat[playerID]["pts_ppr"]
       let tds = 0
@@ -1007,7 +1011,7 @@ async function submitLeagueIDAsync() {
     var ctx = document.getElementById('myChart').getContext("2d");
 
     var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-
+    console.log(weeksPassed)
     let labelArr = []
     for (let i = 0; i < weeksPassed - 1; i++) {
       labelArr.push("Week " + (i + 1))
@@ -1586,7 +1590,7 @@ async function submitLeagueIDAsync() {
       for (let ownerRoster in roster) {
         //now u have each player
         let playerWeight = parseInt(roster[ownerRoster]['weight'])
-        let playerHeight = roster[ownerRoster]['height']
+        let playerHeight = parseInt(roster[ownerRoster]['height'])
         if (playerHeight) {
           let playerHeightInches = playerHeight
 

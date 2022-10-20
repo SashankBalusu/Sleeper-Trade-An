@@ -428,6 +428,8 @@ th, td{
     display:none;
     background: #222430;
     height: fit-content;
+    width: 50vw;
+
     color: white;
     border-radius: 10px;
     padding: 10px 10px 10px 10px;
@@ -438,6 +440,8 @@ th, td{
   margin-top: 20px;
   background: #222430;
   height: fit-content;
+  width: 50vw;
+
   color: white;
   border-radius: 10px;
   padding: 10px 10px 10px 10px;
@@ -448,6 +452,8 @@ th, td{
   margin-top: 20px;
   background: #222430;
   height: fit-content;
+  width: 50vw;
+
   color: white;
   border-radius: 10px;
   padding: 10px 10px 10px 10px;
