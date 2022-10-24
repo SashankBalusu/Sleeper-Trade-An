@@ -869,10 +869,10 @@ async function submitLeagueIDAsync() {
     posNeedGive = {}
   }
   loadTheGif.setAttribute("style", "display: none")
-  const hamburger = document.getElementsByClassName("hamburger")[0]
-  hamburger.addEventListener("click", function(){
-    hamburger.classList.toggle("is-active")
-  })
+  // const hamburger = document.getElementsByClassName("hamburger")[0]
+  // hamburger.addEventListener("click", function(){
+  //   hamburger.classList.toggle("is-active")
+  // })
   const trades = document.querySelector("#trades")
   const stats = document.querySelector("#stats")
   let customTrade = document.createElement("a")
