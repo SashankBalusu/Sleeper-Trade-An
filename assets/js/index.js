@@ -377,11 +377,13 @@ function removeAllChildNodesExceptOne(parent, dontRem) {
 //   document.querySelector(selector).style.display = visible ? 'block' : 'none';
 // }
 function pointsMissed(numPos, weeks, rosterID, player){
+  console.log(numPos)
   let posPoints = {}
   let maxScores = []
   for (let key in numPos) {
     posPoints[key] = []
   }
+  console.log(posPoints)
   for (let i = 1; i < weeks.length; i++) {
     let currMatch = weeks[i]
     for (let j = 0; j < currMatch.length; j++) {
@@ -439,6 +441,7 @@ function pointsMissed(numPos, weeks, rosterID, player){
         let pointsToUse = sorted[0]
         let pointsToUseArr = []
         pointsToUseArr.push(pointsToUse)
+        pointsToUseArr.push(sorted[1])
         posPoints[key] = pointsToUseArr
         continue
       }
@@ -457,6 +460,7 @@ function pointsMissed(numPos, weeks, rosterID, player){
       let currPos = posPoints[key]
       for (let j = 0; j < currPos.length; j++) {
         maxScore += currPos[j]
+        console.log(maxScore)
       }
     }
     maxScores.push(maxScore)
@@ -478,7 +482,10 @@ function pointsMissed(numPos, weeks, rosterID, player){
       }
     }
     maxPointsScored.push(parseFloat(maxScores[i - 1].toFixed(1)))
+    console.log(maxPointsScored)
+
   }
+
   return [truePointsScored, maxPointsScored]
 }
 
