@@ -437,7 +437,7 @@ th, td{
 
 }
 th {
-  width: 33%;
+  width: 15.666666vw;
 }
 a:hover {
   cursor: pointer;
