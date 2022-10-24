@@ -540,10 +540,10 @@ sleeperLeague.addEventListener("click", function () {
       submitLeagueID.setAttribute("style", "display:block")
     }, 700);
     for (let i = 1; i < 19; i++) {
-      fetch(`https://api.sleeper.app/v1/stats/nfl/regular/2021/${(i)}`)
+      fetch(`https://api.sleeper.app/v1/stats/nfl/regular/2022/${(i)}`)
         .then(response => response.json())
         .then(data => statsArr[i] = data);
-      fetch(`https://api.sleeper.app/v1/projections/nfl/regular/2021/${(i)}`)
+      fetch(`https://api.sleeper.app/v1/projections/nfl/regular/2022/${(i)}`)
         .then(response => response.json())
         .then(data => projectionsArr[i] = data);
       // const projectionsData = await httpGetAsync(`https://api.sleeper.app/v1/projections/nfl/regular/2021/${(i)}`)
@@ -664,7 +664,7 @@ async function submitLeagueIDAsync() {
     // localStorage.setItem("projectionsArr", JSON.stringify(projectionsArr))
 
   }
-
+  
   numUsers = league["total_rosters"]
 
   let usernameObj = {}
@@ -869,6 +869,10 @@ async function submitLeagueIDAsync() {
     posNeedGive = {}
   }
   loadTheGif.setAttribute("style", "display: none")
+  const hamburger = document.getElementsByClassName("hamburger")[0]
+  hamburger.addEventListener("click", function(){
+    hamburger.classList.toggle("is-active")
+  })
   const trades = document.querySelector("#trades")
   const stats = document.querySelector("#stats")
   let customTrade = document.createElement("a")
