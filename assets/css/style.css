@@ -12,6 +12,7 @@ body {
   margin: 0;
   padding: 0;
 
+
 }
 #background {
   
@@ -434,6 +435,12 @@ th, td{
     border-radius: 10px;
     padding: 10px 10px 10px 10px;
 
+}
+th {
+  width: 33%;
+}
+a:hover {
+  cursor: pointer;
 }
 #transactionRanksTable {
   display:none;
