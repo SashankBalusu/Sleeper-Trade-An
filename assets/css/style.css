@@ -155,7 +155,7 @@ body {
 #mainSleeper {
     display: grid;
     grid-template-areas: "nav con";
-    grid-template-columns: 30% 80%;
+    grid-template-columns: 30vw 70vw;
     
 
 }
@@ -165,7 +165,7 @@ body {
     background: #222430;
     display: grid;
     grid-area: nav;
-    width: 30%;
+    width: 30vw;
     height: 93%;
     border-radius: 10px;
     margin-top: 20px;
@@ -231,7 +231,7 @@ body {
     display: grid;
     grid-area: con;
     justify-content: center;
-    width: 88%;
+    width: 70vw;
     margin-top: 20px;
   }
 #mainSleeper {
