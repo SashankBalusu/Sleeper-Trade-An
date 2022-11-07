@@ -577,29 +577,57 @@ async function submitLeagueIDAsync() {
 
   let weeksPassed
   let leagueID = leagueIDInput.value
-  let pastLeagueID = JSON.parse(localStorage.getItem("leagueID"))
-  if (pastLeagueID == leagueID) {
-    users = JSON.parse(localStorage.getItem("users"))
-    league = JSON.parse(localStorage.getItem("league"))
-    stat = JSON.parse(localStorage.getItem("stat"))
-    let playerData = await httpGetAsync("https://api.sleeper.app/v1/players/nfl")
-    console.log(playerData)
-    // playerData = playerData.substring(78)
-    // playerData = playerData.substring(0, playerData.length - 26)
-    player = playerData
-    rosters = JSON.parse(localStorage.getItem("rosters"))
-    nflState = JSON.parse(localStorage.getItem("nflState"))
-    matchupData = JSON.parse(localStorage.getItem("matchupData"))
-    matchup = JSON.parse(localStorage.getItem("matchup"))
-    weeks = JSON.parse(localStorage.getItem("weeks"))
-    transactions = JSON.parse(localStorage.getItem("transactions"))
-    weeksPassed = JSON.parse(localStorage.getItem("weeksPassed"))
-    // statsArr = JSON.parse(localStorage.getItem("statsArr"))
-    // projectionsArr = JSON.parse(localStorage.getItem("projectionsArr"))
+  // let pastLeagueID = JSON.parse(localStorage.getItem("leagueID"))
+  // if (pastLeagueID == leagueID) {
+  //   users = JSON.parse(localStorage.getItem("users"))
+  //   league = JSON.parse(localStorage.getItem("league"))
+  //   //stat = JSON.parse(localStorage.getItem("stat"))
+  //   let playerData = await httpGetAsync("https://api.sleeper.app/v1/players/nfl")
+  //   console.log(playerData)
+  //   let statData = await httpGetAsync("https://api.sleeper.app/v1/stats/nfl/regular/2022")
+  //   stat = statData
+  //   let nflStateData = await httpGetAsync("https://api.sleeper.app/v1/state/nfl")
+    
+  //   nflState = nflStateData
+
+  //   weeksPassed = nflState["leg"]
+  //   //weeksPassed = 18
+  //   if (weeksPassed == 0){
+  //     weeksPassed = 18
+  //   }
+
+  //   // let weeks = []
+  //   // let matchupData
+  //   // let matchup
+  //   for (let i = 1; i < weeksPassed; i++) {
+  //     matchupData = await httpGetAsync(`https://api.sleeper.app/v1/league/${leagueID}/matchups/${(i)}`)
+  //     matchup = matchupData
+  //     weeks[i] = matchup
 
 
-  }
-  else {
+  //     const transactionData = await httpGetAsync(`https://api.sleeper.app/v1/league/${leagueID}/transactions/${(i)}`)
+  //     const trans = transactionData
+  //     transactions[i] = trans
+
+
+  //   }
+  //   console.log(weeks)
+  //   // playerData = playerData.substring(78)
+  //   // playerData = playerData.substring(0, playerData.length - 26)
+  //   player = playerData
+  //   rosters = JSON.parse(localStorage.getItem("rosters"))
+  //   nflState = JSON.parse(localStorage.getItem("nflState"))
+  //   // matchupData = JSON.parse(localStorage.getItem("matchupData"))
+  //   // matchup = JSON.parse(localStorage.getItem("matchup"))
+  //   weeks = JSON.parse(localStorage.getItem("weeks"))
+  //   // transactions = JSON.parse(localStorage.getItem("transactions"))
+  //   // weeksPassed = JSON.parse(localStorage.getItem("weeksPassed"))
+  //   // statsArr = JSON.parse(localStorage.getItem("statsArr"))
+  //   // projectionsArr = JSON.parse(localStorage.getItem("projectionsArr"))
+
+
+  // }
+  //else {
     let userData = await httpGetAsync(`https://api.sleeper.app/v1/league/${leagueID}/users`)
     users = userData
     let leagueData = await httpGetAsync(`https://api.sleeper.app/v1/league/${leagueID}`)
@@ -641,29 +669,29 @@ async function submitLeagueIDAsync() {
 
 
     }
-    try {
-      localStorage.setItem("leagueID", JSON.stringify(leagueID))
-      localStorage.setItem("users", JSON.stringify(users))
-      localStorage.setItem("league", JSON.stringify(league))
-      localStorage.setItem("stat", JSON.stringify(stat))
-      localStorage.setItem("rosters", JSON.stringify(rosters))
-      localStorage.setItem("nflState", JSON.stringify(nflState))
-      localStorage.setItem("weeksPassed", JSON.stringify(weeksPassed))
-      localStorage.setItem("matchupData", JSON.stringify(matchupData))
-      localStorage.setItem("matchup", JSON.stringify(matchup))
-      localStorage.setItem("weeks", JSON.stringify(weeks))
-      localStorage.setItem("transactions", JSON.stringify(transactions))
-    }
-    catch {
-      localStorage.removeItem("leagueID")
-    }
+    // try {
+    //   localStorage.setItem("leagueID", JSON.stringify(leagueID))
+    //   localStorage.setItem("users", JSON.stringify(users))
+    //   localStorage.setItem("league", JSON.stringify(league))
+    //   //localStorage.setItem("stat", JSON.stringify(stat))
+    //   localStorage.setItem("rosters", JSON.stringify(rosters))
+    //   localStorage.setItem("nflState", JSON.stringify(nflState))
+    //   // localStorage.setItem("weeksPassed", JSON.stringify(weeksPassed))
+    //   // localStorage.setItem("matchupData", JSON.stringify(matchupData))
+    //   // localStorage.setItem("matchup", JSON.stringify(matchup))
+    //   // localStorage.setItem("weeks", JSON.stringify(weeks))
+    //   // localStorage.setItem("transactions", JSON.stringify(transactions))
+    // }
+    // catch {
+    //   localStorage.removeItem("leagueID")
+    // }
 
 
     // localStorage.setItem("statsArr", JSON.stringify(statsArr))
 
     // localStorage.setItem("projectionsArr", JSON.stringify(projectionsArr))
 
-  }
+  //}
   
   numUsers = league["total_rosters"]
 
@@ -1035,6 +1063,8 @@ async function submitLeagueIDAsync() {
     for (let i = 1; i < weeksPassed; i++) {
       // let matchupData = await httpGetAsync(`https://api.sleeper.app/v1/league/650072723749421056/matchups/${(i)}`)
       // const matchup = JSON.parse(matchupData)
+      console.log(weeks)
+      console.log(weeks[i])
       let currMatchup = weeks[i]
       for (let j = 0; j < matchup.length; j++) {
         if (currMatchup[j]["roster_id"] == rosterID) {
