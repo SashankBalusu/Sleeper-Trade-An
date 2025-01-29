@@ -1,6 +1,5 @@
 # Sleeper-Trade-An
 This project is made for sleeper fantasy football leagues to view more information/statistics on your league as well as calculate possible trades
-Use the league id "650072723749421056" if you want to test it out (site published at sashankbalusu.github.io/Sleeper-Trade-An, but under maintenance for existing season so will be functional after week 1)
 
 Features
 
