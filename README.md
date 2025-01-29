@@ -1,5 +1,5 @@
-# Sleeper-Trade-An
-This project is made for sleeper fantasy football leagues to view more information/statistics on your league as well as calculate possible trades
+# Sleeper-Trade-An (currently under maintanenance for off season)
+This project is made for sleeper fantasy football leagues to view more information/statistics on your league as well as calculate possible trades 
 
 Features
 
